@@ -1,0 +1,19 @@
+Package: baqgarchutil
+Type: Package
+Title: Utility Functions to Analyse a Fitted baqGARCH Model
+Version: 0.0.0.9000
+Authors@R: person("Sebastian", "Birkett", email = "sebastian@birkett.de",
+  role = c("aut", "cre"))
+Description: The mgarchBEKK package provides the means to fit a 
+    bivariate mGJR-GARCH (or baqGARCH) model, which initially was proposed by 
+    Schmidbauer & Roesch. This package provides utility functions to improve 
+    the model fit with a mean equation, analyse the model fit and apply the 
+    News Impact Function based on a fitted mGJR class object.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends:
+  R (>= 3.4.3),
+  mgarchBEKK (>= 0.0.2)
+RoxygenNote: 6.0.1
+Suggests: testthat
