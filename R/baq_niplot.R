@@ -93,7 +93,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
       "#FF0000", "#EF0000", "#DF0000", "#CF0000", "#BF0000",
       "#AF0000", "#9F0000", "#8F0000", "#800000")
 
-  par(pty = 's',
+  graphics::par(pty = 's',
     mfrow = pdir[[plotdir]]
   )
 
@@ -110,19 +110,19 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
 
   # lookup table for the colors used in the News Impact plots
   pcol <- list(
-    "var1" = rev(heat.colors(xy_length)),
-    "var2" = rev(heat.colors(xy_length)),
+    "var1" = rev(grDevices::heat.colors(xy_length)),
+    "var2" = rev(grDevices::heat.colors(xy_length)),
     "cor" = pcol <- tim.colors
   )
 
   # create the j specified plots in ni_plots
   for (j in ni_plots) {
     z <- paste0("z_", j)
-    image(x = xy, y = xy, z = baq_nif$baqH_wide[[z]], col = pcol[[j]],
+    graphics::image(x = xy, y = xy, z = baq_nif$baqH_wide[[z]], col = pcol[[j]],
       main = pmain[[j]],
       xlab = epsnames[1], ylab = epsnames[2])
-    abline(h = 0, v = 0, lty = 1, col = "black")
-    contour(x = xy, y = xy, z = baq_nif$baqH_wide[[z]], add = TRUE)
-    box()
+    graphics::abline(h = 0, v = 0, lty = 1, col = "black")
+    graphics::contour(x = xy, y = xy, z = baq_nif$baqH_wide[[z]], add = TRUE)
+    graphics::box()
   }
 }

@@ -1,0 +1,39 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# baqgarchutil
+
+**!! THIS PACKAGE IS STILL IN EARLY DEVELOPEMENT !!**
+
+The goal of baqgarchutil is to provide utility functions for mGJR class 
+objects from the mgarchBEKK package. This includes fitting a mean 
+equation, analysing the residuals and applying/plotting a News Impact Function.
+
+
+## Installation
+
+You can install baqgarchutil from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("sebinum/baqgarchutil")
+```
+
+## Example
+
+Examples will be included once all planned functions have been implemented.
+
+```{r example}
+## basic example code
+```

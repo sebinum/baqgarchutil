@@ -83,7 +83,7 @@ baq_nifunction <- function(mgjrclass, epsnames = c("eps1", "eps2"),
     )
 
   p <- structure(
-    c(mgjrclass$est.params, list(cov(eps))),
+    c(mgjrclass$est.params, list(stats::cov(eps))),
     names = c("C", "A", "B", "G", "w", "uccov")
   )
 
@@ -135,8 +135,8 @@ baq_nifunction <- function(mgjrclass, epsnames = c("eps1", "eps2"),
 
   # function to convert df_H from long to wide for r-base plots
   long_to_wide <- function(df, rcnames) {
-    output <- as.matrix(unname(reshape(df, idvar = "x", timevar = "y",
-      direction = "wide")[, -(1)]))
+    output <- as.matrix(unname(stats::reshape(df, idvar = "x",
+      timevar = "y", direction = "wide")[, -(1)]))
     colnames(output) <- round(rcnames, 2)
     rownames(output) <- round(rcnames, 2)
     return(output)
@@ -173,5 +173,24 @@ is.baq_nif <- function(x) inherits(x, "baq_nif")
 
 #' @export
 print.baq_nif <- function(x, ...) {
-  cat("Well this sucks")
+  n1 <- names(x$eps[1])
+  n2 <- names(x$eps[2])
+  ni <- structure(
+    x$baqH_long[, c(3, 5, 4)],
+    names = c(paste0("cvar ", n1), paste0("cvar ", n2), "ccor")
+  )
+
+  cat("News Impact Function based on a fitted baqGARCH model.\n\n")
+  cat("------------------------------------------------------\n\n")
+  cat("Series 1 (eps1): ", n1, "\n")
+  cat("Series 2 (eps2): ", n2, "\n")
+  cat("------------------------------------------------------\n\n")
+  cat("Input parameters for the News Impact Function:\n\n")
+  print(x$est.params)
+  cat("------------------------------------------------------\n\n")
+  cat("Summary statistics:\n\n")
+  print(summary(ni))
+  cat("------------------------------------------------------\n\n")
+  cat("Class attributes are accesible via the following names:\n")
+  cat(names(x), "\n")
 }
