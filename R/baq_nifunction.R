@@ -48,7 +48,7 @@
 #' nif <- baq_nifunction(gjr)
 #' }
 #' @export
-baq_nifunction <- function(mgjrclass, epsnames = c("eps1", "eps2"),
+baq_nifunction <- function(mgjrclass, epsnames = c("series1", "series2"),
                             er_grid = 10, er_grid_by = 0.2) {
   # check if input has appropriate class
   if(!inherits(mgjrclass, "mGJR")) {
@@ -67,7 +67,7 @@ baq_nifunction <- function(mgjrclass, epsnames = c("eps1", "eps2"),
     cat("epsnames needs to be of type character with length = 2.\n")
     cat("typeof(epsnames): ", typeof(epsnames), "\n")
     cat("length(epsnames): ", length(epsnames), "\n")
-    epsnames <- c("eps1", "eps2")
+    epsnames <- c("series1", "series2")
     cat("epsnames set to default ", epsnames, "\n")
   }
 
@@ -77,10 +77,19 @@ baq_nifunction <- function(mgjrclass, epsnames = c("eps1", "eps2"),
     stop("er_grid and er_grid_by need to be positive values of type numeric.")
   }
 
+  # replace space with underscore for df names
+  m_names <- gsub(" ", "_", epsnames)
+
   eps <- structure(
     data.frame(eps1 = mgjrclass$eps1, eps2 = mgjrclass$eps2),
-    names = epsnames
+    names = paste0(m_names, "_eps")
     )
+
+  res <- structure(
+    data.frame(res1 = mgjrclass$resid1, res2 = mgjrclass$resid2),
+    names = paste0(m_names, "_res")
+  )
+
 
   p <- structure(
     c(mgjrclass$est.params, list(stats::cov(eps))),
@@ -149,16 +158,17 @@ baq_nifunction <- function(mgjrclass, epsnames = c("eps1", "eps2"),
     z_cor = long_to_wide(df = df_H[, c(1:2, 4)], rcnames = xy)
   )
 
-  cat("News Impact Function successfully applied.\n")
-
   output <- list(
+    series_names = epsnames,
     eps = eps,
-    est.params = p,
+    res = res,
+    est_params = p,
     baqH_long = df_H,
     baqH_wide = z
   )
   class(output) <- "baq_nif"
 
+  cat("News Impact Function successfully applied.\n")
   cat("Class attributes are accesible via the following names:\n")
   cat(names(output), "\n")
 
@@ -180,7 +190,7 @@ print.baq_nif <- function(x, ...) {
     names = c(paste0("cvar ", n1), paste0("cvar ", n2), "ccor")
   )
 
-  cat("News Impact Function based on a fitted baqGARCH model.\n\n")
+  cat("News Impact Function based on a fitted baqGARCH model.\n")
   cat("------------------------------------------------------\n\n")
   cat("Series 1 (eps1): ", n1, "\n")
   cat("Series 2 (eps2): ", n2, "\n")
@@ -188,7 +198,7 @@ print.baq_nif <- function(x, ...) {
   cat("Input parameters for the News Impact Function:\n\n")
   print(x$est.params)
   cat("------------------------------------------------------\n\n")
-  cat("Summary statistics:\n\n")
+  cat("Summary statistics baq_ni conditional variance:\n\n")
   print(summary(ni))
   cat("------------------------------------------------------\n\n")
   cat("Class attributes are accesible via the following names:\n")
