@@ -75,7 +75,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
   oldoptions <- options(stringsAsFactors = FALSE)
   on.exit(options(oldoptions), add = TRUE)
 
-  epsnames <- names(baq_nif$eps)
+  epsnames <- baq_nif$series_names
 
   # the color palette from the tim.colors function from the 'fields' package
   tim.colors <- c(
@@ -104,8 +104,8 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
   pmain <- c(
     "var1" = paste0("News Impact on the variance of ", epsnames[1]),
     "var2" = paste0("News Impact on the variance of ", epsnames[2]),
-    "cor" = paste("News Impact on the correlation of", epsnames[1],
-      epsnames[2], sep = " ")
+    "cor" = paste0("News Impact on the correlation of ", epsnames[1],
+      " & ", epsnames[2])
     )
 
   # lookup table for the colors used in the News Impact plots

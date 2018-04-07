@@ -4,8 +4,8 @@
 \alias{baq_nifunction}
 \title{Apply a News Impact Function}
 \usage{
-baq_nifunction(mgjrclass, epsnames = c("eps1", "eps2"), er_grid = 10,
-  er_grid_by = 0.2)
+baq_nifunction(mgjrclass, epsnames = c("series1", "series2"), er_grid = 10,
+  er_grid_by = 0.2, ni_long = TRUE, ni_wide = TRUE)
 }
 \arguments{
 \item{mgjrclass}{A mGJR class object.}
@@ -18,18 +18,28 @@ in the News Impact Function. Numerical vector of length one.}
 
 \item{er_grid_by}{Steps by which to construct the sequence of returns.
 Numerical vector of length one.}
+
+\item{ni_long}{Logical switch if the conditional variance after news impact
+should be returned in long format (as \code{data.frame}).}
+
+\item{ni_wide}{Logical switch if the conditional variance after news impact
+should be returned in wide format (as \code{matrix}).}
 }
 \value{
 The applied News Impact Function packaged as a \code{baq_nif} class
-  object. The News Impact Functions' conditional variance/correlation in
-  long- (\code{data.frame}) and and wide-format (\code{list} of
-  \code{matrices}).
+  object. The News Impact Functions' conditional variance/correlation
+  (optional) as long- (\code{data.frame}) and and wide-format (\code{list}
+  of \code{matrices}).
  The values are defined as:
 \describe{
   \item{eps}{\code{data.frame} with eps1 and eps2 inherited from the
   \code{mGJR} class object.}
-  \item{est.params}{\code{list} of \code{matrices} with the baqGARCH
-    parameters needed for the News Impact Function.}
+  \item{coeff}{\code{data.frame} with the baqGARCH coefficients
+    needed for the News Impact Function.}
+  \item{coeff_se}{\code{data.frame} with the baqGARCH coefficients
+    Standard Errors.}
+  \item{coeff_tval}{\code{data.frame} with the baqGARCH coefficients
+    T-values.}
   \item{baqH_long}{\code{data.frame} containing the News Impact on the
   conditional variance/correlation of eps1/eps2 in long-format.}
   \item{baqH_wide}{A \code{list} of \code{matrices} with the News Impact on

@@ -10,16 +10,24 @@
 #'   in the News Impact Function. Numerical vector of length one.
 #' @param er_grid_by Steps by which to construct the sequence of returns.
 #' Numerical vector of length one.
+#' @param ni_long Logical switch if the conditional variance after news impact
+#'   should be returned in long format (as \code{data.frame}).
+#' @param ni_wide Logical switch if the conditional variance after news impact
+#'   should be returned in wide format (as \code{matrix}).
 #' @return The applied News Impact Function packaged as a \code{baq_nif} class
-#'   object. The News Impact Functions' conditional variance/correlation in
-#'   long- (\code{data.frame}) and and wide-format (\code{list} of
-#'   \code{matrices}).
+#'   object. The News Impact Functions' conditional variance/correlation
+#'   (optional) as long- (\code{data.frame}) and and wide-format (\code{list}
+#'   of \code{matrices}).
 #'  The values are defined as:
 #' \describe{
 #'   \item{eps}{\code{data.frame} with eps1 and eps2 inherited from the
 #'   \code{mGJR} class object.}
-#'   \item{est.params}{\code{list} of \code{matrices} with the baqGARCH
-#'     parameters needed for the News Impact Function.}
+#'   \item{coeff}{\code{data.frame} with the baqGARCH coefficients
+#'     needed for the News Impact Function.}
+#'   \item{coeff_se}{\code{data.frame} with the baqGARCH coefficients
+#'     Standard Errors.}
+#'   \item{coeff_tval}{\code{data.frame} with the baqGARCH coefficients
+#'     T-values.}
 #'   \item{baqH_long}{\code{data.frame} containing the News Impact on the
 #'   conditional variance/correlation of eps1/eps2 in long-format.}
 #'   \item{baqH_wide}{A \code{list} of \code{matrices} with the News Impact on
@@ -49,7 +57,8 @@
 #' }
 #' @export
 baq_nifunction <- function(mgjrclass, epsnames = c("series1", "series2"),
-                            er_grid = 10, er_grid_by = 0.2) {
+                            er_grid = 10, er_grid_by = 0.2,
+                            ni_long = TRUE, ni_wide = TRUE) {
   # check if input has appropriate class
   if(!inherits(mgjrclass, "mGJR")) {
     stop("mgjrclass needs to be a mGJR class object.")
@@ -90,22 +99,23 @@ baq_nifunction <- function(mgjrclass, epsnames = c("series1", "series2"),
     names = paste0(m_names, "_res")
   )
 
+  par_names <- c("C", "A", "B", "G", "w")
 
   p <- structure(
     c(mgjrclass$est.params, list(stats::cov(eps))),
-    names = c("C", "A", "B", "G", "w", "uccov")
+    names = c(par_names, "uccov")
   )
 
   # prepare coefficients for nif
   pC <- t(p[["C"]]) %*% p[["C"]]                   # C, constant
   pA <- p[["A"]]                                   # A, ARCH-coefficient
   pB <- t(p[["B"]]) %*% p[["uccov"]] %*% p[["B"]]  # B, GARCH-term
-  tG <- p[["G"]]                                   # G, Gamma-coefficient
+  tG <- p[["G"]]                                   # G, Asym.-coefficient
   tw <- p[["w"]]                                   # w, angle for S-function
 
-  H_nif = function(xy, x2) {
-    # xy/x2 stand for the modelled returns of series 1/2
-    x <- c(xy, x2)
+  H_nif = function(ret_series1, ret_series2) {
+    # input is returns / news impact of series 1 & 2
+    x <- c(ret_series1, ret_series2)
     S <-  1-0.5*((cos(pi/4+tw)*x[1]+sin(pi/4+tw)*x[2])/sqrt(x[1]^2+x[2]^2)+1)
 
     pC + t(pA) %*% x %*% t(x) %*% pA + pB + S * (t(tG) %*% x %*% t(x) %*% tG)
@@ -122,7 +132,7 @@ baq_nifunction <- function(mgjrclass, epsnames = c("series1", "series2"),
   # bind names and results, remove redundant covariance
   df_H <- cbind(xg, df_H[, -(3)])
 
-  # function to calculate the conditional correlation
+  # function to calculate the conditional correlation for each row of df_H
   ccor <- function(vec) {
     vec[4]/sqrt(vec[3]*vec[5])
   }
@@ -158,21 +168,34 @@ baq_nifunction <- function(mgjrclass, epsnames = c("series1", "series2"),
     z_cor = long_to_wide(df = df_H[, c(1:2, 4)], rcnames = xy)
   )
 
+  coeff <- par_list_to_dataframe(p)
+  coeff_se <- par_list_to_dataframe(mgjrclass$asy.se.coef,
+                                    colname_ext = "SE")
+  coeff_tval <- coeff[, -(6)]/coeff_se
+  names(coeff_tval) <- paste0(par_names, " ", "T-value")
+
   output <- list(
     series_names = epsnames,
     eps = eps,
     res = res,
-    est_params = p,
-    baqH_long = df_H,
-    baqH_wide = z
+    coeff = coeff,
+    coeff_se = coeff_se,
+    coeff_tval = coeff_tval
   )
+
+  # add conditional variance after news impact in wide / long format
+  # if logical switch is set to TRUE (ni_long can use up lots of space)
+  if (ni_long) output[["baqH_long"]] = df_H
+  if (ni_wide) output[["baqH_wide"]] = z
+
+  # set class to baq_nif
   class(output) <- "baq_nif"
 
   cat("News Impact Function successfully applied.\n")
   cat("Class attributes are accesible via the following names:\n")
   cat(names(output), "\n")
 
-  return(output)
+  output
 }
 
 #' Reports whether x is a baq_nif object
@@ -191,16 +214,62 @@ print.baq_nif <- function(x, ...) {
   )
 
   cat("News Impact Function based on a fitted baqGARCH model.\n")
-  cat("------------------------------------------------------\n\n")
+  cat("------------------------------------------------------\n")
   cat("Series 1 (eps1): ", n1, "\n")
   cat("Series 2 (eps2): ", n2, "\n")
   cat("------------------------------------------------------\n\n")
-  cat("Input parameters for the News Impact Function:\n\n")
-  print(x$est.params)
+  cat("GARCH coefficients for the News Impact Function:\n")
+  print(x$coeff)
+  cat("\nGARCH coefficients Standard Errors:\n")
+  print(x$coeff_se)
+  cat("\nGARCH coefficients absolute T-values:\n")
+  print(abs(x$coeff_tval))
   cat("------------------------------------------------------\n\n")
   cat("Summary statistics baq_ni conditional variance:\n\n")
   print(summary(ni))
   cat("------------------------------------------------------\n\n")
   cat("Class attributes are accesible via the following names:\n")
   cat(names(x), "\n")
+}
+
+#' Transforms a list of matrices to a data.frame.
+#' @param x A list of matrices to be transformed (est.params or
+#'   asy.se.coeff from a calss mGJR object)
+#' @param colname_ext Add an extension to the parameter names.
+#'    Defaults to nothing ("").
+#' @param colname_ext_sep Seperator for colname extension. Will be
+#'   ignored if no extension was added.
+#' @keywords internal
+par_list_to_dataframe <- function(x, colname_ext = "",
+                                  colname_ext_sep = " ") {
+
+  # replace parameter w with replicated matrix so each list element has the same dims
+  x[[5]] <-  matrix(rep(x[[5]], times = 4), nrow = 2, ncol = 2)
+
+
+  # reformat list of matrices to data frame
+  df <- as.data.frame(matrix(unlist(x), nrow = 4, byrow = FALSE))
+
+  #
+  len_df <- length(df)
+
+  # rownames are the matrix location of each list element
+  df_rn <- c("[1,1]", "[2,1]", "[1,2]", "[2,2]")
+  # colnames
+  df_cn <- c("C", "A", "B", "G", "w")
+
+  # add name for unconditional covariance, if there are 6 columns
+  if (len_df == 6) {
+    df_cn <- c(df_cn, "uc_cov")
+  }
+  # add an extension to the column name, if default = "" was overwritten
+  if (colname_ext != "") {
+    df_cn <- paste0(df_cn, colname_ext_sep, colname_ext)
+  }
+
+  structure(
+    df,
+    row.names = df_rn,
+    names = df_cn
+  )
 }
