@@ -1,4 +1,4 @@
 library(testthat)
-library(baqgarchnif)
+library(baqgarchutil)
 
-test_check("baqgarchnif")
+test_check("baqgarchutil")

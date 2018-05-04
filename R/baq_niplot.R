@@ -97,7 +97,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
     mfrow = pdir[[plotdir]]
   )
 
-  xy <- baq_nif$baqH_wide[["x_y"]]
+  xy <- baq_nif$baq_ni_ccovm_wide[["x_y"]]
   xy_length <- length(xy)
 
   # lookup table for the titles of the News Impact plots
@@ -112,17 +112,17 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
   pcol <- list(
     "var1" = rev(grDevices::heat.colors(xy_length)),
     "var2" = rev(grDevices::heat.colors(xy_length)),
-    "cor" = pcol <- tim.colors
+    "cor" = tim.colors
   )
 
   # create the j specified plots in ni_plots
   for (j in ni_plots) {
     z <- paste0("z_", j)
-    graphics::image(x = xy, y = xy, z = baq_nif$baqH_wide[[z]], col = pcol[[j]],
-      main = pmain[[j]],
+    graphics::image(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]],
+      col = pcol[[j]], main = pmain[[j]],
       xlab = epsnames[1], ylab = epsnames[2])
     graphics::abline(h = 0, v = 0, lty = 1, col = "black")
-    graphics::contour(x = xy, y = xy, z = baq_nif$baqH_wide[[z]], add = TRUE)
+    graphics::contour(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]], add = TRUE)
     graphics::box()
   }
 }

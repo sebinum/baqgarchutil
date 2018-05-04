@@ -6,9 +6,9 @@ Authors@R: person("Sebastian", "Birkett", email = "sebastian@birkett.de",
   role = c("aut", "cre"))
 Description: The mgarchBEKK package provides the means to fit a 
     bivariate mGJR-GARCH (or baqGARCH) model, which initially was proposed by 
-    Schmidbauer & Roesch. This package provides utility functions to improve 
-    the model fit with a mean equation, analyse the model fit and apply the 
-    News Impact Function based on a fitted mGJR class object.
+    Schmidbauer & Roesch. This package provides utility functions analyse the 
+    model fit and apply the News Impact Function based on a fitted mGJR class 
+    object.
 License: GPL-3
 URL: https://github.com/sebinum/baqgarchutil
 Encoding: UTF-8

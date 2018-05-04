@@ -4,11 +4,11 @@
 \alias{baq_nifunction}
 \title{Apply a News Impact Function}
 \usage{
-baq_nifunction(mgjrclass, epsnames = c("series1", "series2"), er_grid = 10,
-  er_grid_by = 0.2, ni_long = TRUE, ni_wide = TRUE)
+baq_nifunction(x, epsnames = c("series1", "series2"), er_grid = 10,
+  er_grid_by = 0.2, ni_long = TRUE, ni_wide = TRUE, quiet = FALSE)
 }
 \arguments{
-\item{mgjrclass}{A mGJR class object.}
+\item{x}{A mGJR class object.}
 
 \item{epsnames}{Custom names for the variables eps1 and eps2. Character
 vector of length two. Defaults to c("eps1", "eps2").}
@@ -24,6 +24,9 @@ should be returned in long format (as \code{data.frame}).}
 
 \item{ni_wide}{Logical switch if the conditional variance after news impact
 should be returned in wide format (as \code{matrix}).}
+
+\item{quiet}{Logical switch if information about applying baq_nifunction
+should be shown in the console.}
 }
 \value{
 The applied News Impact Function packaged as a \code{baq_nif} class
@@ -32,19 +35,22 @@ The applied News Impact Function packaged as a \code{baq_nif} class
   of \code{matrices}).
  The values are defined as:
 \describe{
+  \item{series_names}{character \code{vector} with the names for eps1 and eps2}
   \item{eps}{\code{data.frame} with eps1 and eps2 inherited from the
-  \code{mGJR} class object.}
+    \code{mGJR} class object.}
+  \item{baq_h}{\code{data.frame} with the estimated conditional covariance matrices
+    inherited from the \code{mGJR} class object in a more accessible format.}
   \item{coeff}{\code{data.frame} with the baqGARCH coefficients
     needed for the News Impact Function.}
   \item{coeff_se}{\code{data.frame} with the baqGARCH coefficients
     Standard Errors.}
   \item{coeff_tval}{\code{data.frame} with the baqGARCH coefficients
     T-values.}
-  \item{baqH_long}{\code{data.frame} containing the News Impact on the
-  conditional variance/correlation of eps1/eps2 in long-format.}
-  \item{baqH_wide}{A \code{list} of \code{matrices} with the News Impact on
-   the conditional variance of eps1/eps2 and conditional correlation in
-   wide-format.}
+  \item{baq_ni_ccovm_long}{\code{data.frame} containing the News Impact on the
+    conditional variance/correlation of eps1/eps2 in long-format.}
+  \item{baq_ni_ccovm_wide}{A \code{list} of \code{matrices} with the News Impact on
+    the conditional variance of eps1/eps2 and conditional correlation in
+    wide-format.}
 }
 }
 \description{
