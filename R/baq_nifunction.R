@@ -28,11 +28,11 @@
 #'     \code{mGJR} class object.}
 #'   \item{baq_h}{\code{data.frame} with the estimated conditional covariance matrices
 #'     inherited from the \code{mGJR} class object in a more accessible format.}
-#'   \item{coeff}{\code{data.frame} with the baqGARCH coefficients
+#'   \item{coef}{\code{data.frame} with the baqGARCH coefficients
 #'     needed for the News Impact Function.}
-#'   \item{coeff_se}{\code{data.frame} with the baqGARCH coefficients
+#'   \item{coef_se}{\code{data.frame} with the baqGARCH coefficients
 #'     Standard Errors.}
-#'   \item{coeff_tval}{\code{data.frame} with the baqGARCH coefficients
+#'   \item{coef_tval}{\code{data.frame} with the baqGARCH coefficients
 #'     T-values.}
 #'   \item{baq_ni_ccovm_long}{\code{data.frame} containing the News Impact on the
 #'     conditional variance/correlation of eps1/eps2 in long-format.}
@@ -209,20 +209,20 @@ baq_nifunction <- function(x, epsnames = c("series1", "series2"),
   baq_h <- as.data.frame(matrix(unlist(x$H.estimated), ncol = 4, byrow = T))
   names(baq_h) <- c(paste0("cvar_", m_names[1]),
                     rep("ccovar", 2), paste0("cvar_", m_names[1]))
-  coeff <- par_list_to_df(p)
-  coeff_se <- par_list_to_df(x$asy.se.coef,
+  coef <- par_list_to_df(p)
+  coef_se <- par_list_to_df(x$asy.se.coef,
                                     colname_ext = "SE")
-  coeff_tval <- coeff[, -(6)]/coeff_se
-  names(coeff_tval) <- paste0(par_names, " ", "T-value")
+  coef_tval <- coef[, -(6)]/coef_se
+  names(coef_tval) <- paste0(par_names, " ", "T-value")
 
   output <- list(
     series_names = epsnames,
     eps = eps,
     baq_h = baq_h,
     res = res,
-    coeff = coeff,
-    coeff_se = coeff_se,
-    coeff_tval = coeff_tval
+    coef = coef,
+    coef_se = coef_se,
+    coef_tval = coef_tval
   )
 
   # add conditional variance after news impact in wide / long format
@@ -262,11 +262,11 @@ print.baq_nif <- function(x, ...) {
   cat("Series 2 (eps2): ", n2, "\n")
   cat("------------------------------------------------------\n\n")
   cat("GARCH coefficients for the News Impact Function:\n")
-  print(x$coeff)
+  print(x$coef)
   cat("\nGARCH coefficients Standard Errors:\n")
-  print(x$coeff_se)
+  print(x$coef_se)
   cat("\nGARCH coefficients absolute T-values:\n")
-  print(abs(x$coeff_tval))
+  print(abs(x$coef_tval))
   cat("------------------------------------------------------\n\n")
   cat("Summary statistics baq_ni conditional variance:\n\n")
   print(summary(ni))

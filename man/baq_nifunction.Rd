@@ -40,11 +40,11 @@ The applied News Impact Function packaged as a \code{baq_nif} class
     \code{mGJR} class object.}
   \item{baq_h}{\code{data.frame} with the estimated conditional covariance matrices
     inherited from the \code{mGJR} class object in a more accessible format.}
-  \item{coeff}{\code{data.frame} with the baqGARCH coefficients
+  \item{coef}{\code{data.frame} with the baqGARCH coefficients
     needed for the News Impact Function.}
-  \item{coeff_se}{\code{data.frame} with the baqGARCH coefficients
+  \item{coef_se}{\code{data.frame} with the baqGARCH coefficients
     Standard Errors.}
-  \item{coeff_tval}{\code{data.frame} with the baqGARCH coefficients
+  \item{coef_tval}{\code{data.frame} with the baqGARCH coefficients
     T-values.}
   \item{baq_ni_ccovm_long}{\code{data.frame} containing the News Impact on the
     conditional variance/correlation of eps1/eps2 in long-format.}
