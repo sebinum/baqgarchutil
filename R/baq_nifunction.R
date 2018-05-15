@@ -1,13 +1,13 @@
 ################################################################################
-#' Apply a News Impact Function
+#' Apply a news impact Function
 #'
-#' Apply a News Impact Function to a mGJR class object.
+#' Apply a news impact Function to a mGJR class object.
 #'
 #' @param x A mGJR class object.
 #' @param epsnames  Custom names for the variables eps1 and eps2. Character
 #'   vector of length two. Defaults to c("eps1", "eps2").
 #' @param er_grid   The minimum and maximum value for the hypothetical returns
-#'   in the News Impact Function. Numerical vector of length one.
+#'   in the news impact Function. Numerical vector of length one.
 #' @param er_grid_by Steps by which to construct the sequence of returns.
 #' Numerical vector of length one.
 #' @param ni_long Logical switch if the conditional variance after news impact
@@ -17,29 +17,59 @@
 #' @param quiet Logical switch if information about applying baq_nifunction
 #'   should be shown in the console.
 #'
-#' @return The applied News Impact Function packaged as a \code{baq_nif} class
-#'   object. The News Impact Functions' conditional variance/correlation
+#' @return The applied news impact Function packaged as a \code{baq_nif} class
+#'   object. The news impact Functions' conditional variance/correlation
 #'   (optional) as long- (\code{data.frame}) and and wide-format (\code{list}
 #'   of \code{matrices}).
 #'  The values are defined as:
 #' \describe{
-#'   \item{series_names}{character \code{vector} with the names for eps1 and eps2}
+#'   \item{series_names}{character \code{vector} with the names for eps1 and
+#'     eps2}
 #'   \item{eps}{\code{data.frame} with eps1 and eps2 inherited from the
 #'     \code{mGJR} class object.}
-#'   \item{baq_h}{\code{data.frame} with the estimated conditional covariance matrices
-#'     inherited from the \code{mGJR} class object in a more accessible format.}
+#'   \item{baq_h}{\code{data.frame} with the estimated conditional covariance
+#'     matrices inherited from the \code{mGJR} class object in a more accessible
+#'     format.}
 #'   \item{coef}{\code{data.frame} with the baqGARCH coefficients
-#'     needed for the News Impact Function.}
+#'     needed for the news impact Function.}
 #'   \item{coef_se}{\code{data.frame} with the baqGARCH coefficients
 #'     Standard Errors.}
 #'   \item{coef_tval}{\code{data.frame} with the baqGARCH coefficients
 #'     T-values.}
-#'   \item{baq_ni_ccovm_long}{\code{data.frame} containing the News Impact on the
-#'     conditional variance/correlation of eps1/eps2 in long-format.}
-#'   \item{baq_ni_ccovm_wide}{A \code{list} of \code{matrices} with the News Impact on
-#'     the conditional variance of eps1/eps2 and conditional correlation in
-#'     wide-format.}
+#'   \item{baq_ni_ccovm_long}{\code{data.frame} containing the news impact on
+#'     the conditional variance/correlation of eps1/eps2 in long-format.}
+#'   \item{baq_ni_ccovm_wide}{A \code{list} of \code{matrices} with the news
+#'     impact on the conditional variance of eps1/eps2 and conditional
+#'     correlation in wide-format.}
 #' }
+#' @section Details:{
+#'
+#' The news impact on the conditional volatility of a fitted baqGARCH model can
+#' be analysed by letting the conditional volatility matrices \eqn{H = (h_{ij})}
+#' depend on \eqn{x = (x_{1}, x_{2})}{x = (x_1, x_2)}:
+#'
+#' \deqn{x \mapsto H(x) = C^{prime}C + A^{\prime}xx^{\prime}A +
+#' B^{\prime}\sumB + S_{w}(x) * \Gamma^{\prime}xx^{\prime}\Gamma}{x -> H(x) =
+#' C'C + A'xx'A + B'\sumB + S_w(x) * \Gamma'xx'\Gamma}
+#'
+#' where \eqn{\sum} is the unconditional covariance matrices of the bivariate
+#' time series and x the vector of potential innovations (i.e. returns) in the
+#' bivariate series affecting its' conditional volatility.
+#'
+#' The contour lines (conditional variance after news impact) are based on the
+#' functions:
+#'
+#' \deqn{x \mapsto h_{11}(x), x \mapsto h_{22}(x), x \mapsto h_{12}(x)/
+#' \sqrt{h_{11}(x)h_{22}(x)}}{x -> h_{11}(x), x -> h_{22}(x), x -> h_{12}
+#' (x)/\sqrt(h_{11}(x) * h_{22}(x)),}
+#'
+#' where the function \eqn{x_{11}} stands for the news impact on the next day's
+#' conditional variance of returns on series 1, \eqn{x_{22}} stands for the news
+#' impact on the next day's conditional variance of returns on series 2 and
+#' \eqn{h_{12}(x)/\sqrt(h_{11}(x) * h_{22}(x))} for the conditional correlation
+#' of returns (series 1 & 2).
+#' }
+#'
 #'
 #' @references {
 #'   H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
@@ -51,7 +81,8 @@
 #'   Beijing, 2014.
 #' }
 #'
-#' @examples {
+#'
+#' @examples
 #' # create data
 #' eps <- mgarchBEKK::simulateBEKK(2, 100)
 #'
@@ -60,7 +91,7 @@
 #'
 #' # apply the news impact function to the model
 #' nif <- baq_nifunction(gjr)
-#' }
+#'
 #' @export
 baq_nifunction <- function(x, epsnames = c("series1", "series2"),
                             er_grid = 10, er_grid_by = 0.2,
@@ -233,7 +264,7 @@ baq_nifunction <- function(x, epsnames = c("series1", "series2"),
   # set class to baq_nif
   class(output) <- "baq_nif"
   if (!quiet) {
-    cat("News Impact Function successfully applied.\n")
+    cat("News impact function successfully applied.\n")
     cat("Class attributes are accesible via the following names:\n")
     cat(names(output), "\n")
   }
@@ -259,12 +290,12 @@ print.baq_nif <- function(x, ...) {
     names = c(paste0("cvar ", n1), paste0("cvar ", n2), "ccor")
   )
 
-  cat("News Impact Function based on a fitted baqGARCH model.\n")
+  cat("news impact Function based on a fitted baqGARCH model.\n")
   cat("------------------------------------------------------\n")
   cat("Series 1 (eps1): ", n1, "\n")
   cat("Series 2 (eps2): ", n2, "\n")
   cat("------------------------------------------------------\n\n")
-  cat("GARCH coefficients for the News Impact Function:\n")
+  cat("GARCH coefficients for the news impact Function:\n")
   print(x$coef)
   cat("\nGARCH coefficients Standard Errors:\n")
   print(x$coef_se)
