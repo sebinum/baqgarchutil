@@ -247,6 +247,9 @@ baq_nifunction <- function(x, epsnames = c("series1", "series2"),
 #' @export
 is.baq_nif <- function(x) inherits(x, "baq_nif")
 
+#' Reports whether x is a baq_nif object
+#' @param x An object to \code{\link[base]{print}}
+#' @keywords internal
 #' @export
 print.baq_nif <- function(x, ...) {
   n1 <- names(x$eps[1])
@@ -267,9 +270,6 @@ print.baq_nif <- function(x, ...) {
   print(x$coef_se)
   cat("\nGARCH coefficients absolute T-values:\n")
   print(abs(x$coef_tval))
-  cat("------------------------------------------------------\n\n")
-  cat("Summary statistics baq_ni conditional variance:\n\n")
-  print(summary(ni))
   cat("------------------------------------------------------\n\n")
   cat("Class attributes are accesible via the following names:\n")
   cat(names(x), "\n")

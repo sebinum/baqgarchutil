@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 **!! THIS PACKAGE IS STILL IN EARLY DEVELOPEMENT !!**
 
 The goal of baqgarchutil is to provide utility functions for mGJR class 
-objects from the ([garchBEKK](https://github.com/vst/mgarchBEKK) package. 
+objects from the ([mgarchBEKK](https://github.com/vst/mgarchBEKK) package. 
 This includes performing a test for detecting conditional heteroscedasticity, 
 analysing the residuals of a fitted mGJR model and applying/plotting a 
 News Impact Function.
@@ -25,7 +25,7 @@ News Impact Function.
 Needs to be addressed before final release:
 1.  reformat code for `march_test` and `mch_diag`
 2.  update manual for `march_test` and `mch_diag`
-3.  vertical plotting in `baq_niplot` needs proper parameters (par)
+3.  vertical plotting in `baq_niplot` needs apropriate parameters (par)
 4.  implement a `baq_resplot` or a wrapper function to analyze the
     residuals of a fitted mGJR class object with qqplots and the 
     `mch_diag` function

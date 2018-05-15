@@ -7,8 +7,8 @@
 #' @param x A \code{list} of two \code{data.frame}s / \code{matrices}
 #'  containting: \cr
 #'   Element 1 - eps: A T-by-k matrix of residuals for a k-dimensional asset
-#'   return series (return series minus conditional mean / residuals of the mean-
-#'   equation). \cr
+#'   return series (return series minus conditional mean / residuals of the
+#'   mean-equation). \cr
 #'   Element 2 - est_ccovm: The fitted volatility matrices (estimated
 #'   conditional covariance matrix). The dimension is a T-by-k^2 matrix. \cr
 #'   Handles \code{baq_nif} class objects on its own.
@@ -28,13 +28,14 @@
 #'
 #'  2) thus makes it possible to save the results to a variable.
 #'
-#'  The test-statistics are from Tsays(2014) Multivariate Time Series as follows:
+#'  The test-statistics are from Tsays(2014) Multivariate Time Series as
+#'  follows:
 #'
 #'  Q(m):
 #'
 #' @references {
-#'   Ruey S. Tsay (2014, Chapter 7). Multivariate Time Series Analysis with R and
-#'   Financial Applications. John Wiley. Hoboken, NJ.
+#'   Ruey S. Tsay (2014, Chapter 7). Multivariate Time Series Analysis with
+#'   R and Financial Applications. John Wiley. Hoboken, NJ.
 #'
 #'   Ruey S. Tsay (2015, Page 26-28). MTS: All-Purpose Toolkit for Analyzing
 #'   Multivariate Time Series (MTS) and Estimating Multivariate Volatility
@@ -51,14 +52,15 @@
 #' gjr <- mGJR(eps[, 1], eps[, 2])
 #'
 #' # conditional covariance matrices
-#' ccovm <- as.data.frame(matrix(unlist(gjr$H.estimated), ncol = 4, byrow = T))
+#' ccovm <- as.data.frame(matrix(unlist(gjr$H.estimated),
+#'                               ncol = 4, byrow = TRUE))
 #'
 #' #diagnostics on estimated conditional covariance matrices
 #' mch_diag(x = list(eps, ccovm))
 #'
 #' #alternative for a fitted baq_nif object
 #' baq <- baq_nifunction(gjr)
-#' mch_diag(gjr)
+#' mch_diag(baq)
 #'
 #' @export
 mch_diag <- function (x, m = 10, baq_err_cor = TRUE, quiet = FALSE)  {
