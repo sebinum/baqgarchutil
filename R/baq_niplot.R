@@ -62,7 +62,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
 
   if(!all(ni_plots %in% plotpar)) {
     stop("Only 'var1', 'var2' and 'cor' are valid entries for the parameter
-      ni_plots.")
+         ni_plots.")
   }
 
   if(!all(plotdir %in% names(pdir) && length(plotdir) == 1)) {
@@ -72,6 +72,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
     plotdir <- "horizontal"
   }
 
+  # save old options and restore once device has been closed
   oldoptions <- options(stringsAsFactors = FALSE)
   on.exit(options(oldoptions), add = TRUE)
 
@@ -91,11 +92,10 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
       "#FF9F00", "#FF8F00", "#FF8000", "#FF7000", "#FF6000",
       "#FF5000", "#FF4000", "#FF3000", "#FF2000", "#FF1000",
       "#FF0000", "#EF0000", "#DF0000", "#CF0000", "#BF0000",
-      "#AF0000", "#9F0000", "#8F0000", "#800000")
+      "#AF0000", "#9F0000", "#8F0000", "#800000"
+    )
 
-  graphics::par(pty = 's',
-    mfrow = pdir[[plotdir]]
-  )
+  graphics::par(pty = 's', mfrow = pdir[[plotdir]])
 
   xy <- baq_nif$baq_ni_ccovm_wide[["x_y"]]
   xy_length <- length(xy)
@@ -105,7 +105,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
     "var1" = paste0("News Impact on the variance of ", epsnames[1]),
     "var2" = paste0("News Impact on the variance of ", epsnames[2]),
     "cor" = paste0("News Impact on the correlation of ", epsnames[1],
-      " & ", epsnames[2])
+                   " & ", epsnames[2])
     )
 
   # lookup table for the colors used in the News Impact plots
@@ -119,10 +119,11 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
   for (j in ni_plots) {
     z <- paste0("z_", j)
     graphics::image(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]],
-      col = pcol[[j]], main = pmain[[j]],
-      xlab = epsnames[1], ylab = epsnames[2])
+                    col = pcol[[j]], main = pmain[[j]],
+                    xlab = epsnames[1], ylab = epsnames[2])
     graphics::abline(h = 0, v = 0, lty = 1, col = "black")
-    graphics::contour(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]], add = TRUE)
+    graphics::contour(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]],
+                      add = TRUE)
     graphics::box()
   }
 }

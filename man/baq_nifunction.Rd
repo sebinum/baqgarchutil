@@ -65,13 +65,13 @@ The news impact on the conditional volatility of a fitted baqGARCH model can
 be analysed by letting the conditional volatility matrices \eqn{H = (h_{ij})}
 depend on \eqn{x = (x_{1}, x_{2})}{x = (x_1, x_2)}:
 
-\deqn{x \mapsto H(x) = C^{prime}C + A^{\prime}xx^{\prime}A +
-B^{\prime}\sumB + S_{w}(x) * \Gamma^{\prime}xx^{\prime}\Gamma}{x -> H(x) =
+\deqn{x \mapsto H(x) = C^{\prime}C + A^{\prime}xx^{\prime}A +
+B^{\prime}\sum B + S_{w}(x) * \Gamma^{\prime}xx^{\prime}\Gamma}{x -> H(x) =
 C'C + A'xx'A + B'\sumB + S_w(x) * \Gamma'xx'\Gamma}
 
 where \eqn{\sum} is the unconditional covariance matrices of the bivariate
-time series and x the vector of potential innovations (i.e. returns) in the
-bivariate series affecting its' conditional volatility.
+time series and \eqn{x} the vector of potential innovations (i.e. returns) in
+the bivariate series affecting its' conditional volatility.
 
 The contour lines (conditional variance after news impact) are based on the
 functions:
@@ -101,12 +101,12 @@ nif <- baq_nifunction(gjr)
 }
 \references{
 {
-  H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
+  H. Schmidbauer & A. Roesch (2008). Volatility Spillovers Between Crude Oil
   Prices. International Conference on Policy Modeling. EcoMod,
-  Berlin, 2008.
+  Berlin.
 
-  H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
+  H. Schmidbauer & A. Roesch (2014). Volatility Spillovers Between Crude Oil
   Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian Conference,
-  Beijing, 2014.
+  Beijing.
 }
 }

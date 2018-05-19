@@ -1,13 +1,14 @@
 ################################################################################
-#' Multivariate ARCH test
+#' Multivariate Conditional Heteroscedasticity (ARCH) Tests
 #'
-#' Performs tests to check the conditional heteroscedasticity in a vector
-#' time series.
+#' Performs tests to check whether conditional heteroscedasticity in a
+#' multivariate  time series vector is statistically significant.
 #'
-#' @param zt A \code{matrix} of multivariat financial time series. Each
-#'   column contains a series, each row an observation of the series.
+#' @param x A \code{matrix}/\code{data.frame} of multivariat financial time
+#'   series. Each column contains a series, each row an observation of the
+#'   series.
 #' @param m The number of lags of cross-correlation matrices used in the
-#'   tests.
+#'   tests. Can take multiple values. Defaults to c = (8, 10, 12).
 #' @return Four different test statistics and their p-values to determine
 #'   multivariate ARCH-effect as a \code{data.frame}. For more information
 #'   see the Details.
@@ -67,7 +68,7 @@
 #'
 #' \deqn{\bar{R} = \sum_{i=1}^{T}R_{T}/T = (T + 1) / 2,}{R = \sum_{i=1}^T *
 #' R_T/ T = (T + 1) / 2,}
-#' \deqn{\sum_{t=1}^{T}(R_{t} - \bar{R}^{2} = T(T^{2} - 1) / 12.}{\sum_{t=1}^T
+#' \deqn{\sum_{t=1}^{T}(R_{t} - \bar{R}^{2}) = T(T^{2} - 1) / 12.}{\sum_{t=1}^T
 #' * (R_t - R)² = T * (T² - 1) / 12.}
 #'
 #' It can be shown that
@@ -96,9 +97,10 @@
 #'
 #' The multivariate Ljung-Box Statistic is:
 #'
-#' \deqn{Q^{*}_{k}(m) = T^{2} \displaystyle\sum_{i=1}^{m} (\hat{\rho}^{-1}_{0}
-#'       \otimes \hat{\rho}^{-1}_{0}) b_{i}}{Q*_k(m) = T² * \sum_{i=1}^m *
-#'       (\rho_0^-1 \otimes \rho_0^-1) * b_i}
+#' \deqn{Q^{*}_{k}(m) = T^{2} \displaystyle\sum_{i=1}^{m} b_{i}^{\prime}
+#' (\hat{\rho}^{-1}_{0} \otimes \hat{\rho}^{-1}_{0}) b_{i}}{Q*_k(m) = T² *
+#' \sum_{i=1}^m * b'_i(\rho_0^-1 \otimes \rho_0^-1) * b_i}
+#'
 #' where \eqn{T} stands for the sample size, \eqn{k} for the dimension of
 #' \eqn{a_{t}}{a_t} and \eqn{b_{i} = vec(\hat{\rho}^{\prime}_{i})}{b_i =
 #' vec(\rho'_i)} with \eqn{\hat{\rho}_{j}}{\rho_j} being the
@@ -108,7 +110,8 @@
 #' \eqn{Q_{k}^{*}(m)}{Q*_k(m)} is asymptoically distributed as
 #' \eqn{\chi^{2}_{k^{2}m}}{\chi²_{k²m}}.
 #'
-#' \strong{4. \eqn{Q_{k}^{r}(m)}{Q_k^r(m)}}
+#' \strong{4. \eqn{Q_{k}^{r}(m)}{Q_k^r(m)}: robust multivariate Ljung-Box Test on
+#' the \eqn{k}-dimensional series \eqn{a_{t}}{a_t}}
 #'
 #' \eqn{Q^{*}_{k}(m)}{Q*_k(m)} may not perform very well when \eqn{a_{t}}{a_t}
 #' has heavy tails. To make the test results more robust, the heavy tails from
@@ -144,93 +147,138 @@
 #'
 #' @examples
 #' # create heteroscedastic data
-#' dat <- mgarchBEKK::simulateBEKK(2, 500)
-#' eps <- data.frame(eps1 = dat$eps[[1]], eps2 = dat$eps[[2]])
+#' dat <- mgarchBEKK::simulateBEKK(3, 500)
+#' eps <- data.frame(eps1 = dat$eps[[1]], eps2 = dat$eps[[2]],
+#'                   eps3 = dat$eps[[3]])
 #'
 #' # perform multivariate arch test
-#' march_test(eps)
+#' mv_ch_tests(eps)
 #'
 #' @export
-march_test = function (zt, m = 10){
-  # the MarchTest function from Tsays MTS package
-  # modified to output the results as a DF
-  if (!is.matrix(zt)) {zt = as.matrix(zt)}
+mv_ch_tests <- function(x, lags = c(8, 10, 12)) {
 
-  # dimension of zt (k = series, nT = observations)
-  nT = dim(zt)[1]
-  k = dim(zt)[2]
-  # uncondtional stats::covariance-matrix of zt
-  C0 = stats::cov(zt)
-  # center at mean = 0
-  zt1 = scale(zt, center = TRUE, scale = FALSE)
-  # inverse of covariance matrix
-  C0iv = solve(C0)
-  # matrix-multiplication: centered zt with inverse covariance matrix
-  wk = zt1 %*% C0iv
-  # element wise multiplication of wk and zt1
-  wk = wk * zt1
-  rt2 = apply(wk, 1, sum) - k
-  m1 = acf(rt2, lag.max = m, plot = F)
-  acf = m1$acf[2:(m + 1)]
-  c1 = c(1:m)
-  deno = rep(nT, m) - c1
-  Q = sum(acf^2/deno) * nT * (nT + 2)
-  pv1 = 1 - stats::pchisq(Q, m)
-
-  rk = rank(rt2)
-  m2 = acf(rk, lag.max = m, plot = F)
-  acf = m2$acf[2:(m + 1)]
-  mu = -(rep(nT, m) - c(1:m))/(nT * (nT - 1))
-  v1 = rep(5 * nT^4, m) - (5 * c(1:m) + 9) * nT^3 + 9 *
-    (c(1:m) - 2) * nT^2 + 2 * c(1:m) * (5 * c(1:m) +
-        8) * nT + 16 * c(1:m)^2
-  v1 = v1/(5 * (nT - 1)^2 * nT^2 * (nT + 1))
-  QR = sum((acf - mu)^2/v1)
-  pv2 = 1 - stats::pchisq(QR, m)
-
-  x = zt^2
-  g0 = stats::var(x)
-  ginv = solve(g0)
-  qm = 0
-  df = 0
-  for (i in 1:m) {
-    x1 = x[(i + 1):nT, ]
-    x2 = x[1:(nT - i), ]
-    g = stats::cov(x1, x2)
-    g = g * (nT - i - 1)/(nT - 1)
-    h = t(g) %*% ginv %*% g %*% ginv
-    qm = qm + nT * nT * sum(diag(h))/(nT - i)
-    df = df + k * k
+  # transform a multivariate series a_t to a standardized univariate series e_t
+  e_t <- function(at) {
+    at_mc <- scale(at, scale = FALSE)
+    matrix(apply((at_mc %*% solve(stats::cov(at)) * at_mc), 1, sum) - ncol(at))
   }
-  Qkm = qm
-  pv3 = 1 - stats::pchisq(qm, df)
+  # rank based test by moran / roy / dufour
+  roy_dufour <- function(x, lags = c(8, 10, 12), order = 0) {
 
-  cut1 = stats::quantile(rt2, 0.95)
-  idx = c(1:nT)[rt2 <= cut1]
-  x = zt[idx, ]^2
-  eT = length(idx)
-  g0 = stats::var(x)
-  ginv = solve(g0)
-  qm = 0
-  df = 0
-  for (i in 1:m) {
-    x1 = x[(i + 1):eT, ]
-    x2 = x[1:(eT - i), ]
-    g = stats::cov(x1, x2)
-    g = g * (eT - i - 1)/(eT - 1)
-    h = t(g) %*% ginv %*% g %*% ginv
-    qm = qm + eT * eT * sum(diag(h))/(eT - i)
-    df = df + k * k
+    e_t <- function(x) {
+      xs <- scale(x, scale = FALSE)
+      matrix(apply((xs %*% solve(stats::cov(x)) * xs), 1, sum) - ncol(x))
+    }
+
+    et <- e_t(x)
+    # n observations
+    n = nrow(et)
+    # maximum lag specified
+    m = max(lags)
+
+    mean_etr <- function(n, l) {-(n - l) / (n*(n - 1))}
+    var_etr <- function(n, l) {
+      (5 * n^4 - (5 * l + 9) * n^3 + 9 * (l - 2) * n^2 + 2 * l *
+         (5 * l + 8) * n + 16 * l^2) / (5 * (n - 1)^2 * n^2 * (n + 1))
+    }
+
+    etr_m <- mean_etr(n, 1:m)
+    etr_var <- var_etr(n, 1:m)
+    etr_acf <- acf(rank(et), m, plot = FALSE)$acf[-1]
+
+    q_stat <- cumsum((etr_acf - etr_m)^2/etr_var)
+
+    # degrees of freedom
+    df <- lags - order
+    # remove negative degrees of freedom
+    df[which(df < 0)] <- NA
+
+    # p-value for the given lags m
+    p_val <- 1 - stats::pchisq(q_stat[lags], df)
+
+    data.frame(test = rep("Roy-Dufour", length(m)),
+               lag = lags,
+               statistic = q_stat[lags],
+               dof = df,
+               pvalue = p_val)
   }
-  Qkr = qm
-  pv4 = 1 - stats::pchisq(qm, df)
 
-  df_results = data.frame(Test = c("Q*(m)",
-                                   "Q_R(m)",
-                                   "Q*_k(m)",
-                                   "Q^r_k(m)"),
-                          m = rep(m, 4),
-                          Test_statistic = c(Q, QR, Qkm, Qkr),
-                          pvalue = c(pv1, pv2, pv3, pv4))
-  df_results
+  # Ljung-Box Test statistic for the univariate and multivariate case
+  mv_ljung_box <- function(x, lags = c(8, 10, 12) , order = 0,
+                           squared = FALSE) {
+
+    if(!is.matrix(x) & !is.data.frame(x) & !is.numeric(x)) {
+      stop("x needs to be an object of class data.frame, matrix or numeric")
+    }
+    # force from vector to matrix so dims can be calculated
+    if(is.vector(x)) {x <- matrix(x)}
+    # n observations
+    n = nrow(x)
+    # k series
+    k = ncol(x)
+    # maximum lag specified
+    m = max(lags)
+
+    if(m > (n - 1)) {
+      stop("maximum lag specified is bigger than (n-observations - 1): the
+           maximum lag allowed is (n-observations - 1)")
+    } #should
+
+    if(squared) {x <- x^2}
+
+    # autocorrelation of the squared k series
+    ac <- stats::acf(x, m, plot = FALSE)$acf
+
+    # kronecker product of the inverse auto-cross correlation matrix at
+    # lag 0 (p_0^-1 otimes p_0^-1 )
+    kron <- kronecker(solve(ac[1, , ]), solve(ac[1, , ]))
+
+    # 'vectorized' autocorrelation for each lag (column = lag)
+    b <- t(matrix(ac, ncol = k^2)[-(1), ])
+
+    lbsum <- function(lag) {
+      bi <- b[, lag, drop = FALSE]
+      1 / (n - lag) * crossprod(bi, crossprod(kron, bi))}
+
+    eq <- apply(matrix(1:m), 1, lbsum)
+
+    if(k == 1) {
+      q_stat <- n * (n + 2) * cumsum(eq)
+    } else {
+      q_stat <- n^2 * cumsum(eq)
+    }
+
+    # degrees of freedom
+    df <- k^2 * (lags - order)
+    # remove negative degrees of freedom
+    df[which(df < 0)] <- NA
+    # p-value for the given lags m
+    p_val <- 1 - stats::pchisq(q_stat[lags], df)
+
+    data.frame(test = rep("Ljung-Box", length(m)),
+               lag = lags,
+               statistic = q_stat[lags],
+               dof = df,
+               pvalue = p_val)
+    }
+
+  et <- e_t(x)
+
+  # Ljung box on et
+  test_lb_uv <- mv_ljung_box(et, lags = lags)
+  # Rank-Based Roy & Dufour on et
+  test_rd_uv <- roy_dufour(x, lags = lags)
+  # multivariate Ljung Box on at
+  test_lb_mv <- mv_ljung_box(x, lags = lags, squared = TRUE)
+  # mv robust Ljung Box on at / trimmed by upper 5 percent of et
+  x_r <- x[et < stats::quantile(et, 0.95), ]
+  test_lbr_mv <- mv_ljung_box(x_r)
+
+  test_names <- c("Q(m) - uv Ljung-Box Test on standardized series e_t",
+                  "QR(m) - uv Rank-Based Test on rank of e_t",
+                  "QK(m) - mv Ljung-Box Test on a_t",
+                  "QKr(m) - robust mv Ljung-Box Test on trimmed a_t")
+
+  structure(list(test_lb_uv, test_rd_uv, test_lb_mv, test_lbr_mv),
+            "names" = test_names)
 }
