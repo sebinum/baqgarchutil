@@ -97,7 +97,6 @@ gjr <- mgarchBEKK::mGJR(eps$eps[[1]], eps$eps[[2]])
 
 # apply the news impact function to the model
 nif <- baq_nifunction(gjr)
-
 }
 \references{
 {

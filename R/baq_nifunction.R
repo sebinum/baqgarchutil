@@ -91,7 +91,7 @@
 #'
 #' # apply the news impact function to the model
 #' nif <- baq_nifunction(gjr)
-#'
+#' @import mgarchBEKK
 #' @export
 baq_nifunction <- function(x, epsnames = c("series1", "series2"),
                             er_grid = 10, er_grid_by = 0.2,
@@ -239,7 +239,7 @@ baq_nifunction <- function(x, epsnames = c("series1", "series2"),
   }
   baq_h <- as.data.frame(matrix(unlist(x$H.estimated), ncol = 4, byrow = T))
   names(baq_h) <- c(paste0("cvar_", m_names[1]),
-                    rep("ccovar", 2), paste0("cvar_", m_names[1]))
+                    rep("ccovar", 2), paste0("cvar_", m_names[2]))
   coef <- par_list_to_df(p)
   coef_se <- par_list_to_df(x$asy.se.coef,
                                     colname_ext = "SE")

@@ -2,24 +2,25 @@
 #' Multivariate Conditional Heteroscedasticity (ARCH) Tests
 #'
 #' Performs tests to check whether conditional heteroscedasticity in a
-#' multivariate  time series vector is statistically significant.
+#' multivariate  time series vector is statistically significant. This is a
+#' wrapper function for \code{diag_ljung_box} and
+#' \code{diag_dufour_roy}.
 #'
-#' @param x A \code{matrix}/\code{data.frame} of multivariat financial time
-#'   series. Each column contains a series, each row an observation of the
-#'   series.
-#' @param m The number of lags of cross-correlation matrices used in the
-#'   tests. Can take multiple values. Defaults to c = (8, 10, 12).
+#' @param x A \code{matrix} / \code{data.frame} / \code{numeric vector} of
+#'   (multivariat) financial time series. Each column contains a series, each
+#'   row an observation of the series.
+#' @param lags The number of lags of cross-correlation matrices used in the
+#'   tests. Can take multiple values. Defaults to \code{lags = c(8, 10, 12)}.
 #' @return Four different test statistics and their p-values to determine
 #'   multivariate ARCH-effect as a \code{data.frame}. For more information
 #'   see the Details.
 #'
 #' @section Details: {
+#'
 #' The four test statistics are different approaches to detect conditional
 #' heteroscedasticity (ARCH-effect) in multivariate time-series as employed
 #' by \strong{Ruey S. Tsay (2014)} in \emph{Multivariate Time Series Analysis
-#' with R and Financial Applications}. The code is a copy of the function
-#' \code{\link[MTS:MarchTest]{MTS::MarchTest}} but returns the results as a
-#' \code{data.frame} instead of (only) printing the results to the console.
+#' with R and Financial Applications}.
 #'
 #' The \eqn{k}-dimensional series \eqn{a_{t}}{a_t} can be transformed to a
 #' standardized univariate series \eqn{e_{t}}{e_t}:
@@ -126,28 +127,34 @@
 #'
 #' @references {
 #'
-#'   J. M. Dufour & R. Roy (1985). The \eqn{t} copula and related copulas.
+#'   Ljung G. & Box G. E. P. (1978). On a measure of lack of fit in time series
+#'   models. Biometrika 66: 67-72.
+#'
+#'   Dufour, J. M. & Roy R. (1985). The \eqn{t} copula and related copulas.
 #'   Working Paper. Department of Mathematics, Federal Institute of Technology.
 #'
-#'   J. M. Dufour & R. Roy (1986). Generalized portmanteau statistics and tests
+#'   Dufour, J. M. & Roy R. (1986). Generalized portmanteau statistics and tests
 #'   of randomness. Communications in Statistics-Theory and Methods, 15:
 #'   2953-2972.
 #'
-#'   W. K. Li (2004). Diagnostic Checks in Time Series. Chapman & Hall / CRC.
+#'   Li, W. K. (2004). Diagnostic Checks in Time Series. Chapman & Hall / CRC.
 #'   Boca Raton, FL.
 #'
-#'   R. S. Tsay (2014, Chapter 7). Multivariate Time Series Analysis with R
+#'   Tsay, R. S. (2014). Multivariate Time Series Analysis with R
 #'   and Financial Applications. John Wiley. Hoboken, NJ.
 #'
-#'   R. S. Tsay (2015, Page 26-28). MTS: All-Purpose Toolkit for Analyzing
-#'   Multivariate Time Series (MTS) and Estimating Multivariate Volatility
-#'   Models. R package version 0.33.
+#'   Tsay, R. S. (2015). MTS: All-Purpose Toolkit for Analyzing Multivariate
+#'   Time Series (MTS) and Estimating Multivariate Volatility Models.
+#'   R package version 0.33.
 #'
 #' }
 #'
+#' @seealso \code{\link{diag_std_et}}, \code{\link{diag_dufour_roy}},
+#'   \code{\link{diag_ljung_box}}
+#'
 #' @examples
 #' # create heteroscedastic data
-#' dat <- mgarchBEKK::simulateBEKK(3, 500)
+#' dat <- mgarchBEKK::simulateBEKK(3, 150)
 #' eps <- data.frame(eps1 = dat$eps[[1]], eps2 = dat$eps[[2]],
 #'                   eps3 = dat$eps[[3]])
 #'
@@ -157,125 +164,28 @@
 #' @export
 mv_ch_tests <- function(x, lags = c(8, 10, 12)) {
 
+  if(!is.matrix(x) & !is.data.frame(x) & !is.numeric(x)) {
+    stop("x needs to be an object of class data.frame, matrix or numeric")
+  }
+  # force to matrix so dims can be calculated
+  x <- as.matrix(x)
+
   # transform a multivariate series a_t to a standardized univariate series e_t
-  e_t <- function(at) {
-    at_mc <- scale(at, scale = FALSE)
-    matrix(apply((at_mc %*% solve(stats::cov(at)) * at_mc), 1, sum) - ncol(at))
-  }
-  # rank based test by moran / roy / dufour
-  roy_dufour <- function(x, lags = c(8, 10, 12), order = 0) {
-
-    e_t <- function(x) {
-      xs <- scale(x, scale = FALSE)
-      matrix(apply((xs %*% solve(stats::cov(x)) * xs), 1, sum) - ncol(x))
-    }
-
-    et <- e_t(x)
-    # n observations
-    n = nrow(et)
-    # maximum lag specified
-    m = max(lags)
-
-    mean_etr <- function(n, l) {-(n - l) / (n*(n - 1))}
-    var_etr <- function(n, l) {
-      (5 * n^4 - (5 * l + 9) * n^3 + 9 * (l - 2) * n^2 + 2 * l *
-         (5 * l + 8) * n + 16 * l^2) / (5 * (n - 1)^2 * n^2 * (n + 1))
-    }
-
-    etr_m <- mean_etr(n, 1:m)
-    etr_var <- var_etr(n, 1:m)
-    etr_acf <- acf(rank(et), m, plot = FALSE)$acf[-1]
-
-    q_stat <- cumsum((etr_acf - etr_m)^2/etr_var)
-
-    # degrees of freedom
-    df <- lags - order
-    # remove negative degrees of freedom
-    df[which(df < 0)] <- NA
-
-    # p-value for the given lags m
-    p_val <- 1 - stats::pchisq(q_stat[lags], df)
-
-    data.frame(test = rep("Roy-Dufour", length(m)),
-               lag = lags,
-               statistic = q_stat[lags],
-               dof = df,
-               pvalue = p_val)
-  }
-
-  # Ljung-Box Test statistic for the univariate and multivariate case
-  mv_ljung_box <- function(x, lags = c(8, 10, 12) , order = 0,
-                           squared = FALSE) {
-
-    if(!is.matrix(x) & !is.data.frame(x) & !is.numeric(x)) {
-      stop("x needs to be an object of class data.frame, matrix or numeric")
-    }
-    # force from vector to matrix so dims can be calculated
-    if(is.vector(x)) {x <- matrix(x)}
-    # n observations
-    n = nrow(x)
-    # k series
-    k = ncol(x)
-    # maximum lag specified
-    m = max(lags)
-
-    if(m > (n - 1)) {
-      stop("maximum lag specified is bigger than (n-observations - 1): the
-           maximum lag allowed is (n-observations - 1)")
-    } #should
-
-    if(squared) {x <- x^2}
-
-    # autocorrelation of the squared k series
-    ac <- stats::acf(x, m, plot = FALSE)$acf
-
-    # kronecker product of the inverse auto-cross correlation matrix at
-    # lag 0 (p_0^-1 otimes p_0^-1 )
-    kron <- kronecker(solve(ac[1, , ]), solve(ac[1, , ]))
-
-    # 'vectorized' autocorrelation for each lag (column = lag)
-    b <- t(matrix(ac, ncol = k^2)[-(1), ])
-
-    lbsum <- function(lag) {
-      bi <- b[, lag, drop = FALSE]
-      1 / (n - lag) * crossprod(bi, crossprod(kron, bi))}
-
-    eq <- apply(matrix(1:m), 1, lbsum)
-
-    if(k == 1) {
-      q_stat <- n * (n + 2) * cumsum(eq)
-    } else {
-      q_stat <- n^2 * cumsum(eq)
-    }
-
-    # degrees of freedom
-    df <- k^2 * (lags - order)
-    # remove negative degrees of freedom
-    df[which(df < 0)] <- NA
-    # p-value for the given lags m
-    p_val <- 1 - stats::pchisq(q_stat[lags], df)
-
-    data.frame(test = rep("Ljung-Box", length(m)),
-               lag = lags,
-               statistic = q_stat[lags],
-               dof = df,
-               pvalue = p_val)
-    }
-
-  et <- e_t(x)
+  et <- diag_std_et(x)
 
   # Ljung box on et
-  test_lb_uv <- mv_ljung_box(et, lags = lags)
+  test_lb_uv <- diag_ljung_box(et, lags = lags)
   # Rank-Based Roy & Dufour on et
-  test_rd_uv <- roy_dufour(x, lags = lags)
+  test_rd_uv <- diag_dufour_roy(et, lags = lags)
   # multivariate Ljung Box on at
-  test_lb_mv <- mv_ljung_box(x, lags = lags, squared = TRUE)
+  test_lb_mv <- diag_ljung_box(x, lags = lags, squared = TRUE)
+
   # mv robust Ljung Box on at / trimmed by upper 5 percent of et
-  x_r <- x[et < stats::quantile(et, 0.95), ]
-  test_lbr_mv <- mv_ljung_box(x_r)
+  x_r <- x[(et[, 1] <= stats::quantile(et[, 1], 0.95)), ]
+  test_lbr_mv <- diag_ljung_box(x_r, lags = lags, squared = TRUE)
 
   test_names <- c("Q(m) - uv Ljung-Box Test on standardized series e_t",
-                  "QR(m) - uv Rank-Based Test on rank of e_t",
+                  "QR(m) - uv Rank-Based Test (Dufour & Roy) on rank of e_t",
                   "QK(m) - mv Ljung-Box Test on a_t",
                   "QKr(m) - robust mv Ljung-Box Test on trimmed a_t")
 

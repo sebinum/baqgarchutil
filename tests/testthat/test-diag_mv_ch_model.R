@@ -9,21 +9,20 @@ show_failure(invisible(capture.output(
   my_mgjr <- mgarchBEKK::mGJR(ueps$eps1, ueps$eps2)
 )))
 #conditional covariance matrices
-ccovm <- as.data.frame(matrix(unlist(my_mgjr$H.estimated),
-                       ncol = 4, byrow = T))
+ccovm <- matrix(unlist(my_mgjr$H.estimated), ncol = 4, byrow = T)
 
 # object to perform diagnostics on
-x <- list(ueps, ccovm)
+x <- list(as.matrix(ueps), as.matrix(ccovm))
 
 # apply news impact function
 my_baq <- baq_nifunction(my_mgjr, quiet = T)
 
-x2 <- list(my_baq$eps, my_baq$baq_h)
+x2 <- list(as.matrix(my_baq$eps), as.matrix(my_baq$baq_h))
 
 
 ################################################################################
 test_that("mch_diag handles baq_nif class the same way it does normal input", {
-  expect_identical(mch_diag(x), mch_diag(x2))
+  expect_identical(diag_mv_ch_model(x), diag_mv_ch_model(x2))
 })
 
 
