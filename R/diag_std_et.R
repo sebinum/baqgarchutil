@@ -12,7 +12,7 @@
 #'
 #' @section Details: {
 #'
-#' #' A \eqn{k}-dimensional series \eqn{a_{t}}{a_t} can be transformed to a
+#' A \eqn{k}-dimensional series \eqn{a_{t}}{a_t} can be transformed to a
 #' standardized univariate series \eqn{e_{t}}{e_t}:
 #'
 #' \deqn{e_{t} = a_{t}^{\prime} \sum^{-1} a_{t} - k}{e_t = a'_t * \sum^-1 *

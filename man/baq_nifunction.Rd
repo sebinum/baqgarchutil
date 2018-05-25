@@ -2,7 +2,7 @@
 % Please edit documentation in R/baq_nifunction.R
 \name{baq_nifunction}
 \alias{baq_nifunction}
-\title{Apply a news impact Function}
+\title{News Impact on Conditional Variance}
 \usage{
 baq_nifunction(x, epsnames = c("series1", "series2"), er_grid = 10,
   er_grid_by = 0.2, ni_long = TRUE, ni_wide = TRUE, quiet = FALSE)
@@ -30,7 +30,7 @@ should be shown in the console.}
 }
 \value{
 The applied news impact Function packaged as a \code{baq_nif} class
-  object. The news impact Functions' conditional variance/correlation
+  object. The news impact functions' conditional variance / correlation
   (optional) as long- (\code{data.frame}) and and wide-format (\code{list}
   of \code{matrices}).
  The values are defined as:
@@ -45,12 +45,12 @@ The applied news impact Function packaged as a \code{baq_nif} class
   \item{coef}{\code{data.frame} with the baqGARCH coefficients
     needed for the news impact Function.}
   \item{coef_se}{\code{data.frame} with the baqGARCH coefficients
-    Standard Errors.}
+    standard errors.}
   \item{coef_tval}{\code{data.frame} with the baqGARCH coefficients
     T-values.}
-  \item{baq_ni_ccovm_long}{\code{data.frame} containing the news impact on
-    the conditional variance/correlation of eps1/eps2 in long-format.}
-  \item{baq_ni_ccovm_wide}{A \code{list} of \code{matrices} with the news
+  \item{baq_ni_cndh_long}{\code{data.frame} containing the news impact on
+    the conditional variance / correlation of eps1/eps2 in long-format.}
+  \item{baq_ni_cndh_wide}{A \code{list} of \code{matrices} with the news
     impact on the conditional variance of eps1/eps2 and conditional
     correlation in wide-format.}
 }
@@ -71,7 +71,7 @@ C'C + A'xx'A + B'\sumB + S_w(x) * \Gamma'xx'\Gamma}
 
 where \eqn{\sum} is the unconditional covariance matrices of the bivariate
 time series and \eqn{x} the vector of potential innovations (i.e. returns) in
-the bivariate series affecting its' conditional volatility.
+the bivariate series affecting it's  conditional volatility.
 
 The contour lines (conditional variance after news impact) are based on the
 functions:
@@ -83,7 +83,7 @@ functions:
 where the function \eqn{x_{11}} stands for the news impact on the next day's
 conditional variance of returns on series 1, \eqn{x_{22}} stands for the news
 impact on the next day's conditional variance of returns on series 2 and
-\eqn{h_{12}(x)/\sqrt(h_{11}(x) * h_{22}(x))} for the conditional correlation
+\eqn{h_{12}(x)/\sqrt{h_{11}(x) * h_{22}(x)}} for the conditional correlation
 of returns (series 1 & 2).
 }
 }
@@ -100,12 +100,11 @@ nif <- baq_nifunction(gjr)
 }
 \references{
 {
-  H. Schmidbauer & A. Roesch (2008). Volatility Spillovers Between Crude Oil
-  Prices. International Conference on Policy Modeling. EcoMod,
-  Berlin.
+  Schmidbauer, H. & Roesch, A. (2008). Volatility Spillovers Between Crude
+  Oil Prices. International Conference on Policy Modeling. EcoMod, Berlin.
 
-  H. Schmidbauer & A. Roesch (2014). Volatility Spillovers Between Crude Oil
-  Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian Conference,
-  Beijing.
+  Schmidbauer, H. & Roesch, A. (2014). Volatility Spillovers Between Crude
+  Oil Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian
+  Conference,Beijing.
 }
 }

@@ -2,13 +2,12 @@
 % Please edit documentation in R/baq_niplot.R
 \name{baq_niplot}
 \alias{baq_niplot}
-\title{Plot News Impact}
+\title{Plot News Impact on Conditional Variance}
 \usage{
-baq_niplot(baq_nif, ni_plots = c("var1", "var2", "cor"),
-  plotdir = "horizontal")
+baq_niplot(x, ni_plots = c("var1", "var2", "cor"), plotdir = "horizontal")
 }
 \arguments{
-\item{baq_nif}{A baq_nif class object.}
+\item{x}{A baq_nif class object.}
 
 \item{ni_plots}{A character vector specifying which conditional correlation
 / variance to plot. Can contain any combination of "var1", "var2" and
@@ -19,7 +18,7 @@ should be created in a row ("horizontal") or a column ("vertical").
 Defaults to "horizontal".}
 }
 \value{
-A plot of the News Impact on the conditional variance / correlation.
+A plot of the news impact on the conditional variance / correlation.
 }
 \description{
 Plot the News Impact on the conditional variance / correlation of a baq_nif
@@ -51,12 +50,11 @@ dev.off()
 }
 \references{
 {
-  H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
-  Prices. International Conference on Policy Modeling. EcoMod,
-  Berlin, 2008.
+  Schmidbauer, H. & Roesch, A. (2008). Volatility Spillovers Between Crude
+  Oil Prices. International Conference on Policy Modeling. EcoMod, Berlin.
 
-  H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
-  Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian Conference,
-  Beijing, 2014.
+  Schmidbauer, H. & Roesch, A. (2014). Volatility Spillovers Between Crude
+  Oil Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian
+  Conference, Beijing.
 }
 }

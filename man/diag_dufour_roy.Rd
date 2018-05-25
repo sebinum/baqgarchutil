@@ -23,9 +23,6 @@ The Rank-Based Test by Dufour & Roy (1985, 1986) for serial correlation.
 \section{Details}{
  {
 
-\strong{\eqn{Q_{R}(m)}{Q_R(m)}: Rank-Based Test on the the ranked
-standardized series \eqn{e_{t}}{e_t}}
-
 Extreme observations in return series (heavy tails) can have pronounced
 effects on the results of \eqn{Q^{*}(m)}{Q*(m)}. One approach to circumvent
 the heavy tails problem is the Rank-Based test on the rank series of

@@ -149,8 +149,11 @@
 #'
 #' }
 #'
-#' @seealso \code{\link{diag_std_et}}, \code{\link{diag_dufour_roy}},
-#'   \code{\link{diag_ljung_box}}
+#' @seealso \code{\link{diag_std_et}} for the transformation of a multivariate
+#'   financial time series to a standardized scalar series which can be tested
+#'   for conditional heteroscedasticity, \code{\link{diag_ljung_box}} for the
+#'   Ljung-Box Test statistic, \code{\link{diag_dufour_roy}} for the Rank-Based
+#'   Test for serial correlation
 #'
 #' @examples
 #' # create heteroscedastic data

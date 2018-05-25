@@ -1,26 +1,25 @@
 ################################################################################
-#' Plot News Impact
+#' Plot News Impact on Conditional Variance
 #'
 #' Plot the News Impact on the conditional variance / correlation of a baq_nif
 #' class object.
 #'
-#' @param baq_nif A baq_nif class object.
+#' @param x A baq_nif class object.
 #' @param ni_plots A character vector specifying which conditional correlation
 #'   / variance to plot. Can contain any combination of "var1", "var2" and
 #'   "cor". Defaults to c("var1", "var2", "cor").
 #' @param plotdir A character vector of length one to determine if the plots
 #'   should be created in a row ("horizontal") or a column ("vertical").
 #'   Defaults to "horizontal".
-#' @return A plot of the News Impact on the conditional variance / correlation.
+#' @return A plot of the news impact on the conditional variance / correlation.
 #'
 #' @references {
-#'   H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
-#'   Prices. International Conference on Policy Modeling. EcoMod,
-#'   Berlin, 2008.
+#'   Schmidbauer, H. & Roesch, A. (2008). Volatility Spillovers Between Crude
+#'   Oil Prices. International Conference on Policy Modeling. EcoMod, Berlin.
 #'
-#'   H. Schmidbauer & A. Roesch. Volatility Spillovers Between Crude Oil
-#'   Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian Conference,
-#'   Beijing, 2014.
+#'   Schmidbauer, H. & Roesch, A. (2014). Volatility Spillovers Between Crude
+#'   Oil Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian
+#'   Conference, Beijing.
 #' }
 #' @examples
 #' # create data
@@ -46,11 +45,11 @@
 #' dev.off()
 #' }
 #' @export
-baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
+baq_niplot <- function(x, ni_plots = c("var1", "var2", "cor"),
   plotdir = "horizontal") {
 
-  if(!inherits(baq_nif, "baq_nif")) {
-    stop("baq_nif needs to be a baq_nif class object.")
+  if(!inherits(x, "baq_nif")) {
+    stop("x needs to be a baq_nif class object.")
   }
 
   plotpar <- c("var1", "var2", "cor")
@@ -61,8 +60,8 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
     )
 
   if(!all(ni_plots %in% plotpar)) {
-    stop("Only 'var1', 'var2' and 'cor' are valid entries for the parameter
-         ni_plots.")
+    stop("Only 'var1', 'var2' and 'cor' are valid entries for the parameter ",
+         "ni_plots.")
   }
 
   if(!all(plotdir %in% names(pdir) && length(plotdir) == 1)) {
@@ -76,7 +75,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
   oldoptions <- options(stringsAsFactors = FALSE)
   on.exit(options(oldoptions), add = TRUE)
 
-  epsnames <- baq_nif$series_names
+  epsnames <- x$series_names
 
   # the color palette from the tim.colors function from the 'fields' package
   tim.colors <- c(
@@ -97,7 +96,7 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
 
   graphics::par(pty = 's', mfrow = pdir[[plotdir]])
 
-  xy <- baq_nif$baq_ni_ccovm_wide[["x_y"]]
+  xy <- x$baq_ni_cndh_wide[["x_y"]]
   xy_length <- length(xy)
 
   # lookup table for the titles of the News Impact plots
@@ -118,11 +117,11 @@ baq_niplot <- function(baq_nif, ni_plots = c("var1", "var2", "cor"),
   # create the j specified plots in ni_plots
   for (j in ni_plots) {
     z <- paste0("z_", j)
-    graphics::image(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]],
+    graphics::image(x = xy, y = xy, z = x$baq_ni_cndh_wide[[z]],
                     col = pcol[[j]], main = pmain[[j]],
                     xlab = epsnames[1], ylab = epsnames[2])
     graphics::abline(h = 0, v = 0, lty = 1, col = "black")
-    graphics::contour(x = xy, y = xy, z = baq_nif$baq_ni_ccovm_wide[[z]],
+    graphics::contour(x = xy, y = xy, z = x$baq_ni_cndh_wide[[z]],
                       add = TRUE)
     graphics::box()
   }

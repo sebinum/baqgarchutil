@@ -30,11 +30,17 @@ its corresponding conditional variance to a standardized univariate series
 \section{Details}{
  {
 
-A \eqn{k}-dimensional series \eqn{a_{t}}{a_t} and it's time conditional
-covariance matrices can be transformed to a quadratic standardized residual
-series \eqn{\hat{e}_{t}}{ê_t}:
+Ling & Li (1997) proposed model diagnostics based on a standardized scalar
+series \eqn{\hat{e}_{t}}{ê_t}.
 
-\deqn{\hat{e}_{t} = \hat{a}_{t}^{\prime} \hat{\sum}_{t}^{-1}
+The residuals of a \eqn{k}-dimensional financial time series
+\eqn{\hat{a}_{t} = z_{t} - \hat{\mu}}{a_t = z_t - \mu} (where
+\eqn{z_{t}}{z_t} stands for the return series and \eqn{\hat{\mu}}{\mu} for
+the return series conditional mean) and it's time conditional covariance
+matrices can be transformed to a quadratic standardized residual series
+\eqn{\hat{e}_{t}}{ê_t}:
+
+\deqn{\hat{e}_{t} = \hat{a}_{t}^{\prime} \widehat{\sum}_{t}^{-1}
 \hat{a}_{t} - k}{ê_t = â'_t * \sum_t^-1 * â_t}
 
 where \eqn{\hat{\sum}_{t}}{\sum_t} denotes the estimated conditional
@@ -46,9 +52,23 @@ lag-\eqn{\ell}{l} autocorrelation of \eqn{\hat{e}_{t}}{ê_t} is denoted by
 (\sum_{t=l+1}^T * (ê_t - k) * (ê_{t-l} - k)) / (\sum_{t=1}^T (ê_t - k)²}
 
 where \eqn{E(\hat{a}_{t}^{\prime} \hat{\sum}_{t}^{-1} \hat{a}_{t})
-= k}{E(â'_t \sum_t^{-1} â_t) = k} (for more details on this see the
-references). The series returned is \eqn{\hat{e}_{t} - k}{ê_t - k} and thus
-can be used to compute the autocorrelation.
+= k}{E(â'_t \sum_t^{-1} â_t) = k} (for more details see the references). The
+series returned is \eqn{\hat{e}_{t} - k}{ê_t - k} and thus can be used to
+compute the autocorrelation.
+
+An approach focusing on the squared elements of a (marginally) multivariate
+standardized series was proposed by Tse (2002), where the \eqn{i}th
+standardized residual is denoted by
+
+\deqn{\hat{\eta}_{it} = \frac{\hat{a}_{it}}{\sqrt{\hat{\sigma}_{ii,t}}},
+i = 1, ..., k}{\eta_{it} = â_{it} / \sqrt{\sigma_{ii,t}},
+i = 1, ..., k}
+
+\eqn{\hat{\sigma}_{ii,t}}{\sigma_{ii,t}} stands for the \eqn{(i,i)}th element
+of the time depenent conditional covariance matrices
+\eqn{\hat{sum}_{t}}{sum_t} and  \eqn{\hat{a}_{t} = z_{t} - \hat{\mu}}{a_t =
+ z_t - \mu} (where again \eqn{z_{t}}{z_t} stands for the return series and
+ \eqn{\hat{\mu}}{\mu} for the return series conditional mean).
 
 }
 }
@@ -89,6 +109,6 @@ et_cnd <- diag_std_et_cnd(eps = nif$eps, cnd_h = nif$baq_h)
 }
 \seealso{
 \code{\link{diag_dufour_roy}}, \code{\link{diag_ljung_box}},
-  \code{\link{diag_mv_ch_model}} for Test Statistics which can be used with
-  \code{diag_std_et_cnd}
+  \code{\link{diag_mv_ch_model}} for Test Statistics which can be used on
+  the series \code{diag_std_et_cnd}
 }
