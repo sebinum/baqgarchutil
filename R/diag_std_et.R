@@ -15,8 +15,8 @@
 #' A \eqn{k}-dimensional series \eqn{a_{t}}{a_t} can be transformed to a
 #' standardized univariate series \eqn{e_{t}}{e_t}:
 #'
-#' \deqn{e_{t} = a_{t}^{\prime} \sum^{-1} a_{t} - k}{e_t = a'_t * \sum^-1 *
-#' a_t - k}
+#' \deqn{e_{t} = a_{t}^{\prime} \textstyle{\sum}^{-1} a_{t} - k}{e_t = a'_t *
+#' \sum^-1 * a_t - k}
 #'
 #' where \eqn{\sum} denotes the unconditional covariance matrix of the
 #' \eqn{k}-dimensional series \eqn{a_{t}}{a_t}.

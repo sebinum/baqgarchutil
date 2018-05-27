@@ -10,7 +10,8 @@
 #'   "cor". Defaults to c("var1", "var2", "cor").
 #' @param plotdir A character vector of length one to determine if the plots
 #'   should be created in a row ("horizontal") or a column ("vertical").
-#'   Defaults to "horizontal".
+#'   Defaults to "horizontal". Currently the output doesn't look very nice,
+#'   since \code{par()} is not set up for vertical yet.
 #' @return A plot of the news impact on the conditional variance / correlation.
 #'
 #' @references {
@@ -20,6 +21,10 @@
 #'   Schmidbauer, H. & Roesch, A. (2014). Volatility Spillovers Between Crude
 #'   Oil Prices and Us Dollar To Euro Exchange Rates. 4th IAEE Asian
 #'   Conference, Beijing.
+#'
+#'   Nychka, D. & Furrer, R. & Paige, J. & Sain, S. (2017). “fields: Tools for
+#'   spatial data.” doi: 10.5065/D6W957CT (URL:http://doi.org/10.5065/D6W957CT),
+#'   R package version 9.6.
 #' }
 #' @examples
 #' # create data

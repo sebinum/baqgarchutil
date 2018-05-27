@@ -29,7 +29,7 @@
 #' matrices can be transformed to a quadratic standardized residual series
 #' \eqn{\hat{e}_{t}}{ê_t}:
 #'
-#' \deqn{\hat{e}_{t} = \hat{a}_{t}^{\prime} \widehat{\sum}_{t}^{-1}
+#' \deqn{\hat{e}_{t} = \hat{a}_{t}^{\prime} \widehat{\textstyle{\sum}}_{t}^{-1}
 #' \hat{a}_{t} - k}{ê_t = â'_t * \sum_t^-1 * â_t}
 #'
 #' where \eqn{\hat{\sum}_{t}}{\sum_t} denotes the estimated conditional

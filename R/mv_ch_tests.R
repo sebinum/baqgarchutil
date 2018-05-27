@@ -98,9 +98,10 @@
 #'
 #' The multivariate Ljung-Box Statistic is:
 #'
-#' \deqn{Q^{*}_{k}(m) = T^{2} \displaystyle\sum_{i=1}^{m} b_{i}^{\prime}
-#' (\hat{\rho}^{-1}_{0} \otimes \hat{\rho}^{-1}_{0}) b_{i}}{Q*_k(m) = T² *
-#' \sum_{i=1}^m * b'_i(\rho_0^-1 \otimes \rho_0^-1) * b_i}
+#' \deqn{Q^{*}_{k}(m) = T^{2} \displaystyle\sum_{i=1}^{m} \frac{1}{T - i}
+#' b_{i}^{\prime} (\hat{\rho}^{-1}_{0} \otimes \hat{\rho}^{-1}_{0})
+#' b_{i}}{Q*_k(m) = T² * \sum_{i=1}^m * (1 / (T - i)) * b'_i(\rho_0^-1
+#' \otimes \rho_0^-1) * b_i}
 #'
 #' where \eqn{T} stands for the sample size, \eqn{k} for the dimension of
 #' \eqn{a_{t}}{a_t} and \eqn{b_{i} = vec(\hat{\rho}^{\prime}_{i})}{b_i =
