@@ -41,7 +41,7 @@ eps <- data.frame(eps1 = dat$eps[[1]], eps2 = dat$eps[[2]],
                   eps3 = dat$eps[[3]])
 
 # transform to standardized univariate series e_t
-diag_std_et(eps)
+et <- diag_std_et(eps)
 
 }
 \references{

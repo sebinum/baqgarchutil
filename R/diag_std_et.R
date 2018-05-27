@@ -51,7 +51,7 @@
 #'                   eps3 = dat$eps[[3]])
 #'
 #' # transform to standardized univariate series e_t
-#' diag_std_et(eps)
+#' et <- diag_std_et(eps)
 #'
 #' @export
 diag_std_et <- function(x) {
