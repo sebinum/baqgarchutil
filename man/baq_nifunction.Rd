@@ -40,8 +40,10 @@ The applied news impact Function packaged as a \code{baq_nif} class
   \item{eps}{\code{data.frame} with eps1 and eps2 inherited from the
     \code{mGJR} class object.}
   \item{baq_h}{\code{data.frame} with the estimated conditional covariance
-    matrices inherited from the \code{mGJR} class object in a more accessible
-    format.}
+    matrices inherited from the \code{mGJR} class object. Each column stands
+    for a matrix element of the conditional covariance matrix, each row for
+    the time at which it was observed. The time notation of the rows is
+    identical to \code{eps}.}
   \item{coef}{\code{data.frame} with the baqGARCH coefficients
     needed for the news impact Function.}
   \item{coef_se}{\code{data.frame} with the baqGARCH coefficients
@@ -49,7 +51,7 @@ The applied news impact Function packaged as a \code{baq_nif} class
   \item{coef_tval}{\code{data.frame} with the baqGARCH coefficients
     T-values.}
   \item{baq_ni_cndh_long}{\code{data.frame} containing the news impact on
-    the conditional variance / correlation of eps1/eps2 in long-format.}
+    the conditional variance / correlation of eps1 / eps2 in long-format.}
   \item{baq_ni_cndh_wide}{A \code{list} of \code{matrices} with the news
     impact on the conditional variance of eps1/eps2 and conditional
     correlation in wide-format.}

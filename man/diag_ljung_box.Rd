@@ -12,7 +12,7 @@ diag_ljung_box(x, lags = c(8, 10, 12), order = 0, squared = FALSE)
 row an observation of the series.}
 
 \item{lags}{The number of lags of cross-correlation matrices used in the
-tests. Can take multiple values. Defaults to c = (8, 10, 12).}
+tests. Can take multiple values. Defaults to \code{lags = c(8, 10, 12)}.}
 
 \item{order}{If the test is performed on residuals of a fitted time series
 model such as (V)ARMA or GARCH \code{order} generally equals the count of

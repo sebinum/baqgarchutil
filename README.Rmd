@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 The goal of baqgarchutil is to provide utility functions for mGJR class 
 objects from the 
-([mgarchBEKK](https://cran.r-project.org/web/packages/mgarchBEKK/index.html) 
+[mgarchBEKK](https://cran.r-project.org/web/packages/mgarchBEKK/index.html) 
 package and making the process of fitting a model, performing residual 
 diagnostics and visualizing the results of a news impact on the conditional 
 covariance matrices as convenient as possible (within reason).
