@@ -8,7 +8,7 @@ diag_mv_ch_model(x, lags = c(8, 10, 12), baq_err_cor = TRUE)
 }
 \arguments{
 \item{x}{A \code{list} of two \code{data.frame}s / \code{matrices}
-containting: \cr
+containing: \cr
  Element 1 - eps: A T-by-k matrix of residuals for a k-dimensional asset
  return series (return series minus conditional mean / residuals of the
  mean-equation). \cr

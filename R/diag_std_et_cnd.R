@@ -54,7 +54,7 @@
 #' i = 1, ..., k}
 #'
 #' \eqn{\hat{\sigma}_{ii,t}}{\sigma_{ii,t}} stands for the \eqn{(i,i)}th element
-#' of the time depenent conditional covariance matrices
+#' of the time dependent conditional covariance matrices
 #' \eqn{\hat{sum}_{t}}{sum_t} and  \eqn{\hat{a}_{t} = z_{t} - \hat{\mu}}{a_t =
 #'  z_t - \mu} (where again \eqn{z_{t}}{z_t} stands for the return series and
 #'  \eqn{\hat{\mu}}{\mu} for the return series conditional mean).

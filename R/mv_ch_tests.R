@@ -109,7 +109,7 @@
 #' lag-\eqn{\hat{\rho}_{j}}{\rho_j} cross-correlation matrix of
 #' \eqn{a^{2}_{t}}{a²_t}. As in the univariate case, under the null hypothesis
 #' of no conditional heteroscedasticity in \eqn{a_{t}}{a_t},
-#' \eqn{Q_{k}^{*}(m)}{Q*_k(m)} is asymptoically distributed as
+#' \eqn{Q_{k}^{*}(m)}{Q*_k(m)} is asymptotically distributed as
 #' \eqn{\chi^{2}_{k^{2}m}}{\chi²_{k²m}}.
 #'
 #' \strong{4. \eqn{Q_{k}^{r}(m)}{Q_k^r(m)}: robust multivariate Ljung-Box Test on

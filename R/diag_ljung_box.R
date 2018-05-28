@@ -4,7 +4,7 @@
 #' The Ljung-Box Test for serial correlation.
 #'
 #' @param x A \code{matrix} / \code{data.frame} / \code{numeric vector} of
-#'   (multivariat) financial time series. Each column contains a series, each
+#'   (multivariate) financial time series. Each column contains a series, each
 #'   row an observation of the series.
 #' @param lags The number of lags of cross-correlation matrices used in the
 #'   tests. Can take multiple values. Defaults to \code{lags = c(8, 10, 12)}.
@@ -47,7 +47,7 @@
 #' lag-\eqn{\hat{\rho}_{j}}{\rho_j} cross-correlation matrix of
 #' \eqn{a^{2}_{t}}{a²_t}. As in the univariate case, under the null hypothesis
 #' of no conditional heteroscedasticity in \eqn{a_{t}}{a_t},
-#' \eqn{Q_{k}^{*}(m)}{Q*_k(m)} is asymptoically distributed as
+#' \eqn{Q_{k}^{*}(m)}{Q*_k(m)} is asymptotically distributed as
 #' \eqn{\chi^{2}_{k^{2}m}}{\chi²_{k²m}}.
 #'
 #' }
@@ -70,11 +70,11 @@
 #'   Mahdi, E. & McLeod, A. I. (2012). Improved multivariate portmanteau
 #'   diagnostic test. Journal of Time Series Analysis 33/2, 211-222.
 #'
-#'   Tsay, R. S. (2014). Multivariate Time Series Analysis with R
+#'   Tsay, R. S. (2014). multivariate Time Series Analysis with R
 #'   and Financial Applications. John Wiley. Hoboken, NJ.
 #'
 #'   Tsay, R. S. (2015). MTS: All-Purpose Toolkit for Analyzing
-#'   Multivariate Time Series (MTS) and Estimating Multivariate Volatility
+#'   multivariate Time Series (MTS) and Estimating multivariate Volatility
 #'   Models. R package version 0.33.
 #'
 #' }
@@ -85,7 +85,7 @@
 #'   \code{\link{mv_ch_tests}} for different varieties of ARCH tests,
 #'   \code{\link{diag_std_et_cnd}} for the transformation of a multivariate
 #'   financial time series to a standardized scalar series and a multivariate
-#'   (marginally) standardized series based on fitted conditional covariace
+#'   (marginally) standardized series based on fitted conditional covariance
 #'   matrices.
 #'
 #' @examples
