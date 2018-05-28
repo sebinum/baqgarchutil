@@ -12,11 +12,12 @@ knitr::opts_chunk$set(
 )
 ```
 
+# baqgarchutil
 
 [![Travis Build Status](https://api.travis-ci.org/sebinum/baqgarchutil.svg?branch=master)](https://travis-ci.org/sebinum/baqgarchutil)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/baqgarchutil)](https://cran.r-project.org/package=baqgarchutil)
 
-# baqgarchutil
+## Overview
 
 The goal of baqgarchutil is to provide utility functions for mGJR class 
 objects from the 
