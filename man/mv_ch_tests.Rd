@@ -8,7 +8,7 @@ mv_ch_tests(x, lags = c(8, 10, 12))
 }
 \arguments{
 \item{x}{A \code{matrix} / \code{data.frame} / \code{numeric vector} of
-(multivariat) financial time series. Each column contains a series, each
+(multivariate) financial time series. Each column contains a series, each
 row an observation of the series.}
 
 \item{lags}{The number of lags of cross-correlation matrices used in the
