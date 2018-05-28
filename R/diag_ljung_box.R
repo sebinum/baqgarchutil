@@ -67,6 +67,9 @@
 #'   Li, W. K. (2004). Diagnostic Checks in Time Series. Chapman & Hall / CRC.
 #'   Boca Raton, FL.
 #'
+#'   Mahdi, E. & McLeod, A. I. (2012). Improved multivariate portmanteau
+#'   diagnostic test. Journal of Time Series Analysis 33/2, 211-222.
+#'
 #'   Tsay, R. S. (2014). Multivariate Time Series Analysis with R
 #'   and Financial Applications. John Wiley. Hoboken, NJ.
 #'
