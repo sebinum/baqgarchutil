@@ -7,7 +7,7 @@
 #' \code{diag_dufour_roy}.
 #'
 #' @param x A \code{matrix} / \code{data.frame} / \code{numeric vector} of
-#'   (multivariat) financial time series. Each column contains a series, each
+#'   (multivariate) financial time series. Each column contains a series, each
 #'   row an observation of the series.
 #' @param lags The number of lags of cross-correlation matrices used in the
 #'   tests. Can take multiple values. Defaults to \code{lags = c(8, 10, 12)}.

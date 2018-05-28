@@ -7,10 +7,10 @@
 #' \eqn{e_{t}^{k}}{e_t^k}.
 #'
 #' @param eps A \code{matrix} / \code{data.frame} / \code{numeric vector} of
-#'   (multivariat) financial time series. Each column contains a series, each
+#'   (multivariate) financial time series. Each column contains a series, each
 #'   row an observation of the series.
 #' @param cnd_h A \code{matrix} / \code{data.frame} with the conditional
-#'   variance of eps. The dimensions of \code{cnd_h} need to fullfill the
+#'   variance of eps. The dimensions of \code{cnd_h} need to fulfil the
 #'   following conditions: \code{nrow(cnd_h) == nrow(eps)} and
 #'   \code{ncol(cnd_h) == ncol(eps)^2}.
 #' @return A list containing the standardized univariate conditional series

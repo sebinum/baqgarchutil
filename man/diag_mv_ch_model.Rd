@@ -9,19 +9,18 @@ diag_mv_ch_model(x, lags = c(8, 10, 12), baq_err_cor = TRUE)
 \arguments{
 \item{x}{A \code{list} of two \code{data.frame}s / \code{matrices}
 containing: \cr
- Element 1 - eps: A T-by-k matrix of residuals for a k-dimensional asset
- return series (return series minus conditional mean / residuals of the
- mean-equation). \cr
+ Element 1 - eps: Residuals for a k-dimensional asset return series
+ (return series minus conditional mean / residuals of the mean-equation).\cr
  Element 2 - cnd_h: The fitted volatility matrices (estimated
- conditional covariance matrix). The dimension is a T-by-k^2 matrix. \cr
- Handles \code{baq_nif} class objects on its own.}
+ conditional covariance matrix). Has to have k^2 columns.\cr
+ Can handle \code{baq_nif} class objects.}
 
 \item{lags}{The number of lags used in the tests. Defaults to 10.}
 
 \item{baq_err_cor}{Logical switch if potential negative variances should be
 handled for \code{baq_nif} object. This is achieved by removing all
 observations up to the last negative variance in descending order from eps
-and ccovm.}
+and cnd_h.}
 }
 \value{
 Various test statistics and their p-values.
