@@ -1,13 +1,13 @@
 Package: baqgarchutil
 Type: Package
-Title: Utility Functions to Analyse a Fitted baqGARCH Model
+Title: Analyse a Fitted baqGARCH Model
 Version: 0.3.0
 Authors@R: person("Sebastian", "Birkett", email = "sebastian@birkett.de",
   role = c("aut", "cre"))
-Description: The baqgarchutil package provides some utility functions to analyse
-    a fitted mGJR-GARCH (or baqGARCH) model from the mgarchBEKK package. The 
-    key-features of baqgarchutil comprise of model diagnostics as well as applying
-    and plotting a news impact function.
+Description: Provides some utility functions to analyse a fitted mGJR-GARCH (or 
+    baqGARCH) model from the mGJR() function in the 'mgarchBEKK' package. The 
+    key-features of baqgarchutil comprise of model diagnostics as well as 
+    applying and plotting a news impact function.
 License: GPL-3
 URL: https://github.com/sebinum/baqgarchutil
 Encoding: UTF-8

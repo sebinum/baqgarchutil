@@ -44,11 +44,14 @@
 #'     impact on the conditional variance of eps1/eps2 and conditional
 #'     correlation in wide-format.}
 #' }
+#'
 #' @section Details:{
 #'
-#' The news impact on the conditional volatility of a fitted baqGARCH model can
-#' be analysed by letting the conditional volatility matrices \eqn{H = (h_{ij})}
-#' depend on \eqn{x = (x_{1}, x_{2})}{x = (x_1, x_2)}:
+#' Schmidbauer & Roesch (2008, 2014) proposed a bivariate asymmetric quadratic
+#' GARCH (baqGARCH) model to account for asymmetric components in bivariate
+#' volatility matrices. They also apply a news impact on the conditional volatility
+#' of a fitted baqGARCH model by letting the conditional volatility matrices
+#' \eqn{H = (h_{ij})} depend on \eqn{x = (x_{1}, x_{2})}{x = (x_1, x_2)}:
 #'
 #' \deqn{x \mapsto H(x) = C^{\prime}C + A^{\prime}xx^{\prime}A +
 #' B^{\prime}\sum B + S_{w}(x) * \Gamma^{\prime}xx^{\prime}\Gamma}{x -> H(x) =
@@ -72,7 +75,6 @@
 #' of returns (series 1 & 2).
 #' }
 #'
-#'
 #' @references {
 #'   Schmidbauer, H. & Roesch, A. (2008). Volatility Spillovers Between Crude
 #'   Oil Prices. International Conference on Policy Modeling. EcoMod, Berlin.
@@ -82,6 +84,8 @@
 #'   Conference,Beijing.
 #' }
 #'
+#' @seealso \code{\link{baq_niplot}} to plot the news impact function and
+#'  \code{\link{diag_mv_ch_model}} to perform tests to determine model adequacy
 #'
 #' @examples
 #' # create data

@@ -8,7 +8,7 @@ baqgarchutil
 Overview
 --------
 
-The goal of baqgarchutil is to provide utility functions for mGJR class objects from the [mgarchBEKK](https://cran.r-project.org/web/packages/mgarchBEKK/index.html) package and making the process of identifying conditional heteroscedasticity, performing residual diagnostics and visualizing the results of a news impact on the conditional covariance matrices as convenient as possible.
+The goal of baqgarchutil is to provide utility functions for mGJR class objects from the [mgarchBEKK](https://CRAN.R-project.org/package=mgarchBEKK) package and making the process of identifying conditional heteroscedasticity, performing residual diagnostics and visualizing the results of a news impact on the conditional covariance matrices as convenient as possible.
 
 Installation
 ------------

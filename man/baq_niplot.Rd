@@ -25,6 +25,16 @@ A plot of the news impact on the conditional variance / correlation.
 Plot the News Impact on the conditional variance / correlation of a baq_nif
 class object.
 }
+\section{Details}{
+{
+
+For more details on the baqGARCH model and the application of a news impact
+function as proposed by Schmidbauer & Roesch (2008, 2014) check the details
+section of \code{\link{baq_nifunction}} and further see the references.
+
+}
+}
+
 \examples{
 # create data
 eps <- mgarchBEKK::simulateBEKK(2, 100)
@@ -62,4 +72,8 @@ dev.off()
   spatial data.” doi: 10.5065/D6W957CT (URL:http://doi.org/10.5065/D6W957CT),
   R package version 9.6.
 }
+}
+\seealso{
+\code{\link{baq_nifunction}} for fitting a \code{baq_nif}-class
+  object
 }
